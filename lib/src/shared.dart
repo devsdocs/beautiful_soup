@@ -6,6 +6,7 @@ import 'package:html/dom.dart';
 import 'interface/interface.dart';
 import 'tags.dart';
 
+///
 class Shared extends Tags implements ITreeSearcher, IOutput {
   @override
   Bs4Element? findFirstAny() =>
@@ -31,9 +32,10 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
       if (attrs == null && !anyTag && validTag) {
         return ((element ?? doc).querySelector(name) as Element?)?.bs4;
       }
-      final cssSelector = ((!validTag || anyTag) && (attrs == null))
-          ? '*'
-          : _selectorBuilder(tagName: validTag ? name : '*', attrs: attrs!);
+      final cssSelector =
+          ((!validTag || anyTag) && (attrs == null))
+              ? '*'
+              : _selectorBuilder(tagName: validTag ? name : '*', attrs: attrs!);
       return ((element ?? doc).querySelector(cssSelector) as Element?)?.bs4;
     }
     return findAll(
@@ -81,12 +83,13 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
       );
       return _limitedList(filtered, limit);
     }
-    final cssSelector = ((!validTag || anyTag) && (attrs == null))
-        ? '*'
-        : _selectorBuilder(tagName: validTag ? name : '*', attrs: attrs!);
-    final elements =
-        ((element ?? doc).querySelectorAll(cssSelector) as List<Element>)
-            .map((e) => e.bs4);
+    final cssSelector =
+        ((!validTag || anyTag) && (attrs == null))
+            ? '*'
+            : _selectorBuilder(tagName: validTag ? name : '*', attrs: attrs!);
+    final elements = ((element ?? doc).querySelectorAll(cssSelector)
+            as List<Element>)
+        .map((e) => e.bs4);
 
     final filtered = _filterResults(
       allResults: elements.toList(),
@@ -262,8 +265,11 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
     Pattern? string,
     String? selector,
   }) {
-    final filtered =
-        findAllNextElements(name, attrs: attrs, selector: selector);
+    final filtered = findAllNextElements(
+      name,
+      attrs: attrs,
+      selector: selector,
+    );
     return filtered.firstOrNull;
   }
 
@@ -358,20 +364,13 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  Node? findNextParsed({
-    RegExp? pattern,
-    int? nodeType,
-  }) {
+  Node? findNextParsed({RegExp? pattern, int? nodeType}) {
     final filtered = findNextParsedAll(pattern: pattern, nodeType: nodeType);
     return filtered.firstOrNull;
   }
 
   @override
-  List<Node> findNextParsedAll({
-    RegExp? pattern,
-    int? nodeType,
-    int? limit,
-  }) {
+  List<Node> findNextParsedAll({RegExp? pattern, int? nodeType, int? limit}) {
     assert(limit == null || limit >= 0);
 
     final bs4 = _bs4;
@@ -395,12 +394,11 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  Node? findPreviousParsed({
-    RegExp? pattern,
-    int? nodeType,
-  }) {
-    final filtered =
-        findPreviousParsedAll(pattern: pattern, nodeType: nodeType);
+  Node? findPreviousParsed({RegExp? pattern, int? nodeType}) {
+    final filtered = findPreviousParsedAll(
+      pattern: pattern,
+      nodeType: nodeType,
+    );
     return filtered.firstOrNull;
   }
 
@@ -438,11 +436,12 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
       return element?.text ?? _bs4.text;
     }
 
-    final texts = _bs4.nextParsedAll
-        .where((node) => node.nodeType == Node.TEXT_NODE)
-        .map((textNode) => strip ? textNode.data.trim() : textNode.data)
-        .toList()
-      ..removeWhere((e) => e.isEmpty);
+    final texts =
+        _bs4.nextParsedAll
+            .where((node) => node.nodeType == Node.TEXT_NODE)
+            .map((textNode) => strip ? textNode.data.trim() : textNode.data)
+            .toList()
+          ..removeWhere((e) => e.isEmpty);
 
     return texts.join(separator);
   }
@@ -482,13 +481,17 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
         final current = _TagDataExtractor.parseNode(child, indentation: spaces);
         lists.add(current);
 
-        final descendants = child.nodes
-            .map((node) {
-              spaces++;
-              return _recursiveNodeExtractorSearch(node, indentation: spaces);
-            })
-            .expand((e) => e)
-            .toList();
+        final descendants =
+            child.nodes
+                .map((node) {
+                  spaces++;
+                  return _recursiveNodeExtractorSearch(
+                    node,
+                    indentation: spaces,
+                  );
+                })
+                .expand((e) => e)
+                .toList();
         lists.addAll(descendants);
       }
     }
@@ -569,17 +572,19 @@ List<Bs4Element> _filterResults({
   }
   if (regex != null) {
     final regExp = regex.asRegExp;
-    filtered = List.of(filtered).where((e) {
-      if (regExp.hasMatch(e.name ?? '')) return true;
-      return false;
-    }).toList();
+    filtered =
+        List.of(filtered).where((e) {
+          if (regExp.hasMatch(e.name ?? '')) return true;
+          return false;
+        }).toList();
   }
   if (string != null) {
     final regExp = string.asRegExp;
-    filtered = List.of(filtered).where((e) {
-      if (regExp.hasMatch(e.string)) return true;
-      return false;
-    }).toList();
+    filtered =
+        List.of(filtered).where((e) {
+          if (regExp.hasMatch(e.string)) return true;
+          return false;
+        }).toList();
   }
   return filtered;
 }

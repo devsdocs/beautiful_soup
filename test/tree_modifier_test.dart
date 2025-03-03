@@ -38,17 +38,15 @@ void main() {
           bs4!.outerHtml,
           equals("<p class=\"title\"><b>The Dormouse's story</b></p>"),
         );
-        expect(
-          anotherElement!.outerHtml,
-          equals("<h1>This is heading 1</h1>"),
-        );
+        expect(anotherElement!.outerHtml, equals("<h1>This is heading 1</h1>"));
         expect(anotherElement, isNotNull);
 
         bs4.append(anotherElement);
         expect(
           bs4.outerHtml,
           equals(
-              "<p class=\"title\"><b>The Dormouse's story</b><h1>This is heading 1</h1></p>"),
+            "<p class=\"title\"><b>The Dormouse's story</b><h1>This is heading 1</h1></p>",
+          ),
         );
       });
     });
@@ -70,7 +68,8 @@ void main() {
         expect(
           bs4.outerHtml,
           equals(
-              "<p class=\"title\"><b>The Dormouse's story</b><h1>This is heading 1</h1><a>text</a></p>"),
+            "<p class=\"title\"><b>The Dormouse's story</b><h1>This is heading 1</h1><a>text</a></p>",
+          ),
         );
       });
     });
@@ -148,8 +147,7 @@ void main() {
         );
       });
 
-      test(
-          "throws RangeError if referenced element does not "
+      test("throws RangeError if referenced element does not "
           "exist in the parse tree", () {
         final bs4 = bs.find('p', attrs: {'class': 'story'});
         final anotherElement = bs.title;
@@ -209,8 +207,7 @@ void main() {
         );
       });
 
-      test(
-          "appends if the referenced element is last "
+      test("appends if the referenced element is last "
           "item of the parse tree", () {
         final bs4 = bs.find('p', attrs: {'class': 'story'});
         final anotherElement = bs.title;
@@ -234,8 +231,7 @@ void main() {
         );
       });
 
-      test(
-          "throws RangeError if referenced element does not "
+      test("throws RangeError if referenced element does not "
           "exist in the parse tree", () {
         final bs4 = bs.find('p', attrs: {'class': 'story'});
         final anotherElement = bs.title;
@@ -266,10 +262,7 @@ void main() {
 
         // children have one element less
         expect(bs4.children.length, 2);
-        expect(
-          bs4.children.map((e) => e.name),
-          equals(<String>['p', 'p']),
-        );
+        expect(bs4.children.map((e) => e.name), equals(<String>['p', 'p']));
       });
     });
 
@@ -296,17 +289,13 @@ void main() {
           a_tag.toString(),
           '<a href="http://example.com/">I linked to </a>',
         );
-        expect(
-          i_tag.toString(),
-          '<i></i>',
-        );
+        expect(i_tag.toString(), '<i></i>');
         expect(a_tag.children.length, 0);
       });
     });
 
     group('replaceWith', () {
-      test(
-          'removes and replaces element from the parse tree and '
+      test('removes and replaces element from the parse tree and '
           'returns it', () {
         final bs4 = bs.body;
         final replacement = bs.title;
@@ -358,10 +347,7 @@ void main() {
         final bs4 = bs.findFirstAny();
         expect(bs4, isNotNull);
         expect(bs4!.name, equals('b'));
-        expect(
-          bs4.toString(),
-          equals('<b class="boldest">Extremely bold</b>'),
-        );
+        expect(bs4.toString(), equals('<b class="boldest">Extremely bold</b>'));
 
         // change tag name
         bs4.name = 'blockquote';
@@ -411,16 +397,10 @@ void main() {
         );
 
         bs4.removeAttr('another-attribute');
-        expect(
-          bs4.toString(),
-          '<b id="apptheme">bold</b>',
-        );
+        expect(bs4.toString(), '<b id="apptheme">bold</b>');
 
         bs4.removeAttr('id');
-        expect(
-          bs4.toString(),
-          '<b>bold</b>',
-        );
+        expect(bs4.toString(), '<b>bold</b>');
 
         expect(bs4.getAttrValue('id'), isNull);
         expect(bs4['id'], isNull);
@@ -436,11 +416,10 @@ void main() {
         expect(bs4!.hasAttr('id'), isTrue);
         expect(bs4.hasAttr('class'), isTrue);
 
-        bs4..removeAttr('id')..removeAttr('class');
-        expect(
-          bs4.toString(),
-          '<blockquote>Extremely bold</blockquote>',
-        );
+        bs4
+          ..removeAttr('id')
+          ..removeAttr('class');
+        expect(bs4.toString(), '<blockquote>Extremely bold</blockquote>');
 
         expect(bs4['id'], isNull);
         expect(bs4['class'], isNull);
@@ -497,7 +476,8 @@ void main() {
         expect(
           bs4.toString(),
           equals(
-              '<a href="http://example.com/">I linked to <i>example.com</i></a>'),
+            '<a href="http://example.com/">I linked to <i>example.com</i></a>',
+          ),
         );
 
         // clear tag's contents

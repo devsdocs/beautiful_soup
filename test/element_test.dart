@@ -44,10 +44,7 @@ void main() {
         final bs4 = bs.p;
 
         expect(bs4, isNotNull);
-        expect(
-          bs4!.innerHtml,
-          equals("<b>The Dormouse's story</b>"),
-        );
+        expect(bs4!.innerHtml, equals("<b>The Dormouse's story</b>"));
       });
 
       test('does not find innerHtml (empty string)', () {

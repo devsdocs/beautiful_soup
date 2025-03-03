@@ -59,10 +59,7 @@ void main() {
           bs4Text,
           startsWith('Once upon a time there were three little sister'),
         );
-        expect(
-          bs4Text,
-          contains('         Elsie'),
-        );
+        expect(bs4Text, contains('         Elsie'));
       });
 
       test('returns text, stripped', () {
@@ -70,40 +67,35 @@ void main() {
         expect(
           bs4Text,
           startsWith(
-              'Once upon a time there were three little sisters; and their names wereElsie,LacieandTillie'),
+            'Once upon a time there were three little sisters; and their names wereElsie,LacieandTillie',
+          ),
         );
       });
 
       test('returns text, stripped with separator', () {
-        final bs4Text =
-            bs.find('p', class_: 'story')?.getText(separator: ' ', strip: true);
+        final bs4Text = bs
+            .find('p', class_: 'story')
+            ?.getText(separator: ' ', strip: true);
         expect(
           bs4Text,
           startsWith(
-              'Once upon a time there were three little sisters; and their names were Elsie , Lacie and Tillie'),
+            'Once upon a time there were three little sisters; and their names were Elsie , Lacie and Tillie',
+          ),
         );
       });
 
       test('nested getText, fragment example', () {
         bs = BeautifulSoup.fragment(
-            '<a href="http://example.com/">\nI linked to <i>example.com</i>\n</a>');
-        final bs4TextNoParams = bs.getText();
-        expect(
-          bs4TextNoParams,
-          equals('\nI linked to example.com\n'),
+          '<a href="http://example.com/">\nI linked to <i>example.com</i>\n</a>',
         );
+        final bs4TextNoParams = bs.getText();
+        expect(bs4TextNoParams, equals('\nI linked to example.com\n'));
 
         final bs4TextSeparator = bs.getText(separator: '|');
-        expect(
-          bs4TextSeparator,
-          equals('\nI linked to |example.com|\n'),
-        );
+        expect(bs4TextSeparator, equals('\nI linked to |example.com|\n'));
 
         final bs4TextSeparatorStrip = bs.getText(separator: '|', strip: true);
-        expect(
-          bs4TextSeparatorStrip,
-          equals('I linked to|example.com'),
-        );
+        expect(bs4TextSeparatorStrip, equals('I linked to|example.com'));
       });
     });
 
@@ -121,16 +113,15 @@ void main() {
     group('prettify', () {
       test('prettifies, example #1', () {
         bs = BeautifulSoup.fragment(
-            '<b><!--Hey, buddy. Want to buy a used parser?--></b>');
+          '<b><!--Hey, buddy. Want to buy a used parser?--></b>',
+        );
 
         expect(
           bs.prettify(),
-          _trimLeadingWhitespace(
-            '''
+          _trimLeadingWhitespace('''
           <b>
            <!--Hey, buddy. Want to buy a used parser?-->
-          </b>''',
-          ),
+          </b>'''),
         );
         expect(
           bs.prettify(),
@@ -143,8 +134,7 @@ void main() {
 
         expect(
           bs.prettify(),
-          _trimLeadingWhitespace(
-            '''
+          _trimLeadingWhitespace('''
           <a>
            <b>
             text1
@@ -152,8 +142,7 @@ void main() {
            <c>
             text2
            </c>
-          </a>''',
-          ),
+          </a>'''),
         );
         expect(
           bs.prettify(),
@@ -166,12 +155,16 @@ void main() {
 
 // credits @Irhn: https://github.com/dart-lang/language/issues/559#issuecomment-528812035
 String _trimLeadingWhitespace(String text) {
-  final commonLeadingWhitespaceRE =
-      RegExp(r"([ \t]+)(?![^]*^(?!\1))", multiLine: true);
+  final commonLeadingWhitespaceRE = RegExp(
+    r"([ \t]+)(?![^]*^(?!\1))",
+    multiLine: true,
+  );
   var commonWhitespace = commonLeadingWhitespaceRE.matchAsPrefix(text);
   if (commonWhitespace != null) {
     return text.replaceAll(
-        RegExp("^${commonWhitespace[1]}", multiLine: true), "");
+      RegExp("^${commonWhitespace[1]}", multiLine: true),
+      "",
+    );
   }
   return text;
 }

@@ -39,11 +39,12 @@ void main() {
         );
       });
 
-      test(
-          'does not find if element with specified attributes '
+      test('does not find if element with specified attributes '
           'does not exists', () {
-        final elements =
-            bs.findAll('a', attrs: {'id': 'link1', 'href': 'unknown'});
+        final elements = bs.findAll(
+          'a',
+          attrs: {'id': 'link1', 'href': 'unknown'},
+        );
 
         expect(elements.length, 0);
       });
@@ -73,11 +74,7 @@ void main() {
         );
 
         // specifying attributes does not have influence
-        elements = bs.findAll(
-          '',
-          selector: '.sister',
-          attrs: {'class': 'top'},
-        );
+        elements = bs.findAll('', selector: '.sister', attrs: {'class': 'top'});
         expect(elements.length, 3);
         expect(
           elements.last.toString(),
@@ -119,10 +116,7 @@ void main() {
           elements[0].toString(),
           '<a href="http://example.com/elsie" class="sister" id="link1">Elsie</a>',
         );
-        expect(
-          elements.map((e) => e.name),
-          equals(<String>['a', 'a', 'a']),
-        );
+        expect(elements.map((e) => e.name), equals(<String>['a', 'a', 'a']));
         expect(
           elements.map((e) => e.id),
           equals(<String>['link1', 'link2', 'link3']),
@@ -163,14 +157,8 @@ void main() {
         final elements = bs.findAll('*', regex: r'^b');
 
         expect(elements.length, 2);
-        expect(
-          elements[0].toString(),
-          startsWith('<body>\n'),
-        );
-        expect(
-          elements[1].toString(),
-          "<b>The Dormouse's story</b>",
-        );
+        expect(elements[0].toString(), startsWith('<body>\n'));
+        expect(elements[1].toString(), "<b>The Dormouse's story</b>");
       });
 
       test('finds all by string, part of string', () {
@@ -185,10 +173,7 @@ void main() {
       test('finds all by string, exact string match', () {
         final elements = bs.findAll('*', string: r'^Some name$');
         expect(elements.length, 1);
-        expect(
-          elements.first.toString(),
-          '<a href="unknown">Some name</a>',
-        );
+        expect(elements.first.toString(), '<a href="unknown">Some name</a>');
       });
 
       test('finds all with the given tag and limit', () {
@@ -226,10 +211,7 @@ void main() {
           throwsA(isA<AssertionError>()),
         );
 
-        expect(
-          () => bs.findAll('', limit: -2),
-          throwsA(isA<AssertionError>()),
-        );
+        expect(() => bs.findAll('', limit: -2), throwsA(isA<AssertionError>()));
 
         expect(
           () => bs.findAll('*', limit: -50),
@@ -265,18 +247,13 @@ void main() {
         );
       });
 
-      test(
-          'does not find if element with specified attributes '
+      test('does not find if element with specified attributes '
           'does not exists', () {
-        final element = bs.find(
-          'a',
-          attrs: {'id': 'link1', 'href': 'unknown'},
-        );
+        final element = bs.find('a', attrs: {'id': 'link1', 'href': 'unknown'});
         expect(element, isNull);
       });
 
-      test(
-          'finds first element in the parse tree with the given tag if '
+      test('finds first element in the parse tree with the given tag if '
           'the attribute has multiple elements', () {
         final element = bs.find('p', attrs: {'class': 'story'});
 
@@ -305,11 +282,7 @@ void main() {
         );
 
         // specifying attributes does not have influence
-        element = bs.find(
-          '',
-          selector: '#link1',
-          attrs: {'class': 'top'},
-        );
+        element = bs.find('', selector: '#link1', attrs: {'class': 'top'});
         expect(element, isNotNull);
         expect(
           element!.toString(),
@@ -339,7 +312,8 @@ void main() {
         expect(
           element.toString(),
           startsWith(
-              '<p class="story">Once upon a time there were three little'),
+            '<p class="story">Once upon a time there were three little',
+          ),
         );
       });
 
@@ -448,16 +422,20 @@ void main() {
         final element = bs.a;
         expect(element, isNotNull);
 
-        final nextSibling =
-            element!.findNextSibling('a', attrs: {'id': 'link3'});
+        final nextSibling = element!.findNextSibling(
+          'a',
+          attrs: {'id': 'link3'},
+        );
         expect(
           nextSibling.toString(),
           equals('<a class="sister" id="link3">Tillie</a>'),
         );
 
         // any tag name should return same result
-        final nextSibling2 =
-            element.findNextSibling('a', attrs: {'id': 'link3'});
+        final nextSibling2 = element.findNextSibling(
+          'a',
+          attrs: {'id': 'link3'},
+        );
         expect(
           nextSibling2.toString(),
           equals('<a class="sister" id="link3">Tillie</a>'),
@@ -556,8 +534,10 @@ void main() {
       test('finds all with defined tag', () {
         final element = bs.findAll('a').last;
 
-        final prevSiblings =
-            element.findPreviousSiblings('*', attrs: {'href': true});
+        final prevSiblings = element.findPreviousSiblings(
+          '*',
+          attrs: {'href': true},
+        );
         expect(prevSiblings.length, 2);
         expect(
           prevSiblings.map((e) => e.id),
@@ -629,8 +609,10 @@ void main() {
         final element = bs.body;
         expect(element, isNotNull);
 
-        final nextElements =
-            element!.findAllNextElements('', selector: '.story');
+        final nextElements = element!.findAllNextElements(
+          '',
+          selector: '.story',
+        );
         expect(nextElements.length, 2);
         expect(nextElements.map((e) => e.name), equals(<String>['p', 'p']));
         expect(
@@ -718,8 +700,10 @@ void main() {
         final element = bs.a;
         expect(element, isNotNull);
 
-        final prevElements =
-            element!.findAllPreviousElements('body', attrs: {'class': true});
+        final prevElements = element!.findAllPreviousElements(
+          'body',
+          attrs: {'class': true},
+        );
         expect(prevElements.isEmpty, isTrue);
       });
 
@@ -734,8 +718,9 @@ void main() {
         final element = bs.body;
         expect(element, isNotNull);
 
-        final nextParsed =
-            element!.findNextParsed(pattern: RegExp('^(<a).*id="link'));
+        final nextParsed = element!.findNextParsed(
+          pattern: RegExp('^(<a).*id="link'),
+        );
         expect(nextParsed, isNotNull);
         expect(
           nextParsed!.data,
@@ -782,17 +767,15 @@ void main() {
         expect(element, isNotNull);
 
         // find all elements that starts with: <p class="story"
-        final nextParsedAll =
-            element!.findNextParsedAll(pattern: RegExp(r'^(<p class="story")'));
+        final nextParsedAll = element!.findNextParsedAll(
+          pattern: RegExp(r'^(<p class="story")'),
+        );
         expect(nextParsedAll.length, 2);
         expect(
           nextParsedAll[0].data,
           startsWith('<p class="story">Once upon a'),
         );
-        expect(
-          nextParsedAll[1].data,
-          equals('<p class="story">...</p>'),
-        );
+        expect(nextParsedAll[1].data, equals('<p class="story">...</p>'));
         expect(
           nextParsedAll.map((e) => e.nodeType),
           equals(<int>[Node.ELEMENT_NODE, Node.ELEMENT_NODE]),
@@ -834,8 +817,9 @@ void main() {
         final element = bs.find('c');
         expect(element, isNotNull);
 
-        final prevParsedAll =
-            element!.findPreviousParsedAll(nodeType: Node.COMMENT_NODE);
+        final prevParsedAll = element!.findPreviousParsedAll(
+          nodeType: Node.COMMENT_NODE,
+        );
         expect(prevParsedAll.length, 1);
         expect(prevParsedAll[0].data, equals('<!-- some comment -->'));
         expect(prevParsedAll[0].nodeType, Node.COMMENT_NODE);
@@ -854,10 +838,7 @@ void main() {
           startsWith('<p class="story">Once upon a time'),
         );
         // TODO: recursive search: nextParsedAll/prevParsedAll, should output as well: <a href="http://example.com/elsie" class="sister
-        expect(
-          prevParsedAll[1].data,
-          startsWith('<html><head>\n'),
-        );
+        expect(prevParsedAll[1].data, startsWith('<html><head>\n'));
         expect(
           prevParsedAll.map((e) => e.nodeType),
           equals(<int>[Node.ELEMENT_NODE, Node.ELEMENT_NODE]),

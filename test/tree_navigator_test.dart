@@ -17,10 +17,7 @@ void main() {
         final bs4 = bs.body?.children;
         expect(bs4, isNotNull);
         expect(bs4!.length, 3);
-        expect(
-          bs4.map((e) => e.name),
-          equals(<String>['p', 'p', 'p']),
-        );
+        expect(bs4.map((e) => e.name), equals(<String>['p', 'p', 'p']));
       });
 
       test("does not have children", () {
@@ -36,10 +33,7 @@ void main() {
         final bs4 = bs.body?.contents;
         expect(bs4, isNotNull);
         expect(bs4!.length, 3);
-        expect(
-          bs4.map((e) => e.name),
-          equals(<String>['p', 'p', 'p']),
-        );
+        expect(bs4.map((e) => e.name), equals(<String>['p', 'p', 'p']));
       });
 
       test("does not have content", () {
@@ -153,10 +147,7 @@ void main() {
         final parents = bs4!.parents;
         expect(parents, isNotEmpty);
         expect(parents.length, 2);
-        expect(
-          parents.map((e) => e.name),
-          equals(<String>['body', 'html']),
-        );
+        expect(parents.map((e) => e.name), equals(<String>['body', 'html']));
       });
 
       test("does not have parents", () {
@@ -193,10 +184,7 @@ void main() {
 
         final prevSiblings = bs4!.previousSiblings;
         expect(prevSiblings.length, 2);
-        expect(
-          prevSiblings.map((e) => e.name),
-          equals(<String>['a', 'a']),
-        );
+        expect(prevSiblings.map((e) => e.name), equals(<String>['a', 'a']));
         expect(
           prevSiblings.map((e) => e.id),
           equals(<String>['link2', 'link1']),
@@ -265,7 +253,8 @@ void main() {
         expect(
           nextElement.toString(),
           equals(
-              '<a href="http://example.com/elsie" class="sister" id="link1">Elsie</a>'),
+            '<a href="http://example.com/elsie" class="sister" id="link1">Elsie</a>',
+          ),
         );
       });
 
@@ -455,8 +444,7 @@ void main() {
         bs = BeautifulSoup.fragment(html_comment);
       });
 
-      test(
-          "finds all next parsed elements, within children, "
+      test("finds all next parsed elements, within children, "
           "parent and next sibling", () {
         final bs4 = bs.find('b');
         expect(bs4, isNotNull);
@@ -528,8 +516,7 @@ void main() {
         bs = BeautifulSoup.fragment(html_comment);
       });
 
-      test(
-          "finds all prev parsed elements, within children, "
+      test("finds all prev parsed elements, within children, "
           "parent and prev sibling", () {
         final bs4 = bs.find('c');
         expect(bs4, isNotNull);

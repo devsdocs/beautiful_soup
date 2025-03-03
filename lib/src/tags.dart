@@ -5,7 +5,9 @@ import 'bs_soup.dart';
 import 'extensions.dart';
 import 'interface/interface.dart';
 
+///
 class Tags implements ITags {
+  ///
   Element? element;
   Document? _doc;
   DocumentFragment? _docFragment;

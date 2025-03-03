@@ -312,19 +312,12 @@ abstract class ITreeSearcher {
   /// );
   /// ```
   /// {@endtemplate}
-  Node? findNextParsed({
-    RegExp? pattern,
-    int? nodeType,
-  });
+  Node? findNextParsed({RegExp? pattern, int? nodeType});
 
   /// {@macro tree_searcher_findNextParsed}
   ///
   /// {@macro tree_searcher_find3Parse}
-  List<Node> findNextParsedAll({
-    RegExp? pattern,
-    int? nodeType,
-    int? limit,
-  });
+  List<Node> findNextParsedAll({RegExp? pattern, int? nodeType, int? limit});
 
   /// {@template tree_searcher_findPreviousParsed}
   /// These methods use [previousParsed] to iterate over the tags, comments,
@@ -335,10 +328,7 @@ abstract class ITreeSearcher {
   /// {@endtemplate}
   ///
   /// {@macro tree_searcher_find3Parse}
-  Node? findPreviousParsed({
-    RegExp? pattern,
-    int? nodeType,
-  });
+  Node? findPreviousParsed({RegExp? pattern, int? nodeType});
 
   /// {@macro tree_searcher_findPreviousParsed}
   ///

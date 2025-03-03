@@ -7,18 +7,19 @@ import 'helpers.dart';
 import 'interface/interface.dart';
 import 'shared.dart';
 
+///
 class Bs4Element extends Shared
     implements IElement, ITreeNavigator, ITreeModifier {
-  Bs4Element._(
-    Element element,
-  ) {
+  Bs4Element._(Element element) {
     this.element = element;
   }
 
+  ///
   factory Bs4Element(Element element) => Bs4Element._(element);
 
   bool _isDecomposed = false;
 
+  ///
   bool get decomposed => _isDecomposed;
 
   Element get _element => element!;
@@ -269,10 +270,11 @@ class Bs4Element extends Shared
 
     // find within children
     if (element.hasChildNodes()) {
-      final descendants = element.nodes
-          .map((node) => recursiveNodeSearch(node))
-          .expand((e) => e)
-          .toList();
+      final descendants =
+          element.nodes
+              .map((node) => recursiveNodeSearch(node))
+              .expand((e) => e)
+              .toList();
       nextParsedAll.addAll(descendants);
     }
 

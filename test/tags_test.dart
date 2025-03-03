@@ -70,8 +70,7 @@ void main() {
       });
 
       test('finds h1 - h6 tags', () {
-        bs = BeautifulSoup(
-          '''
+        bs = BeautifulSoup('''
         <html>
           <head>
             <title>Title of the document</title>
@@ -85,8 +84,7 @@ void main() {
             <h6>Sixth-level heading</h6>
           </body>
         </html>
-          ''',
-        );
+          ''');
         expect(bs.html, isNotNull);
 
         var body = bs.body;
@@ -110,13 +108,11 @@ void main() {
       });
 
       test('finds img and a tags', () {
-        bs = BeautifulSoup.fragment(
-          '''
+        bs = BeautifulSoup.fragment('''
           <a href="default.asp">
             <img src="smiley.gif" alt="HTML tutorial" style="width:42px;height:42px;">
           </a>
-          ''',
-        );
+          ''');
         var bs4 = bs.a;
         expect(bs4, isNotNull);
         expect(bs4!.name, equals('a'));
@@ -131,8 +127,7 @@ void main() {
       });
 
       test('finds table tags', () {
-        bs = BeautifulSoup.fragment(
-          '''
+        bs = BeautifulSoup.fragment('''
           <table>
             <tr>
               <th>Company</th>
@@ -150,8 +145,7 @@ void main() {
               <td>Mexico</td>
             </tr>
           </table>
-          ''',
-        );
+          ''');
         final bs4 = bs.table;
         expect(bs4, isNotNull);
         expect(bs4!.name, equals('table'));
@@ -159,8 +153,7 @@ void main() {
       });
 
       test('finds lists related tags', () {
-        bs = BeautifulSoup.fragment(
-          '''
+        bs = BeautifulSoup.fragment('''
           <div>
             <ul>
               <li>Coffee</li>
@@ -179,8 +172,7 @@ void main() {
               <dd>- white cold drink</dd>
             </dl>
           </div>
-          ''',
-        );
+          ''');
         final bs4 = bs.findFirstAny();
         expect(bs4, isNotNull);
         expect(bs4!.children.length, 3);

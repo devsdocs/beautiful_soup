@@ -24,9 +24,11 @@ void main() {
 
         // content
         expect(
-            text,
-            contains(
-                'Needless to say, once those stories appeared I was deluged with requests for comment and clarification.'));
+          text,
+          contains(
+            'Needless to say, once those stories appeared I was deluged with requests for comment and clarification.',
+          ),
+        );
 
         // tags
         expect(text, contains('Tags: science fiction, syfy, television'));
@@ -36,25 +38,29 @@ void main() {
       });
 
       test('finds all image links within main post content', () {
-        final images =
-            bs.find('div', attrs: {'class': 'post-main'})?.findAll('img');
+        final images = bs
+            .find('div', attrs: {'class': 'post-main'})
+            ?.findAll('img');
         expect(images, isNotNull);
         expect(images!.length, 3);
 
         expect(
           images[0]['src'],
           equals(
-              'https://georgerrmartin.com/notablog/wp-content/themes/dark-shop-lite/profiles/thumb.png'),
+            'https://georgerrmartin.com/notablog/wp-content/themes/dark-shop-lite/profiles/thumb.png',
+          ),
         );
         expect(
           images[1]['src'],
           equals(
-              'http://georgerrmartin.com/notablog/wp-content/uploads/import/463237_800.jpg'),
+            'http://georgerrmartin.com/notablog/wp-content/uploads/import/463237_800.jpg',
+          ),
         );
         expect(
           images[2]['src'],
           equals(
-              'http://georgerrmartin.com/notablog/wp-content/uploads/import/462875_800.jpg'),
+            'http://georgerrmartin.com/notablog/wp-content/uploads/import/462875_800.jpg',
+          ),
         );
       });
     });
