@@ -452,8 +452,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   @override
   String prettify() {
     final topElement = findFirstAny()?.clone(true);
-    if (topElement == null ||
-        topElement.element == null) {
+    if (topElement == null || topElement.element == null) {
       return _bs4.outerHtml;
     }
 
@@ -464,29 +463,35 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
 
   void _prettyPrint(Node node, int level, StringBuffer buffer) {
     final indent = ' ' * level;
-    
+
     if (node is Element) {
       // Extract tag information
       final tagExtractor = _TagDataExtractor.parseElement(node);
-      
+
       // Write opening tag
       buffer.write('$indent${tagExtractor.startingTag}\n');
-      
+
       // Process children with increased indentation
       for (final child in node.nodes) {
-        final childText = child.text?.trim() ?? '';
-        if (child is Element || childText.isNotEmpty) {
-          _prettyPrint(child, level + 2, buffer);
-        }
+        _prettyPrint(child, level + 2, buffer);
       }
-      
+
       // Write closing tag
       buffer.write('$indent${tagExtractor.closingTag}\n');
-    } else {
+    } else if (node.nodeType == Node.COMMENT_NODE) {
+      // Handle comment nodes
+      buffer.write('$indent<!--${node.data}-->\n');
+    } else if (node.nodeType == Node.TEXT_NODE) {
       // Handle text nodes
-      final textContent = node.text?.trim() ?? '';
+      final textContent = node.data.trim();
       if (textContent.isNotEmpty) {
         buffer.write('$indent$textContent\n');
+      }
+    } else {
+      // Handle other node types
+      final nodeContent = node.data.trim();
+      if (nodeContent.isNotEmpty) {
+        buffer.write('$indent$nodeContent\n');
       }
     }
   }
