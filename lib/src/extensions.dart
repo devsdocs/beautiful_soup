@@ -45,12 +45,6 @@ extension NodeExt on Node {
 }
 
 ///
-extension ListExt<E> on List<E> {
-  ///
-  E? get firstOrNull => isEmpty ? null : first;
-}
-
-///
 extension PatternExt on Pattern {
   ///
   RegExp get asRegExp => this is RegExp ? this as RegExp : RegExp(toString());
