@@ -452,48 +452,69 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   @override
   String prettify() {
     final topElement = findFirstAny()?.clone(true);
-    if (topElement == null || topElement.element == null) {
+    if (topElement == null ||
+        topElement.element == null ||
+        topElement.nextParsed == null) {
       return _bs4.outerHtml;
     }
 
-    final buffer = StringBuffer();
-    _prettyPrint(topElement.element!, 0, buffer);
-    return buffer.toString();
-  }
-
-  void _prettyPrint(Node node, int level, StringBuffer buffer) {
-    final indent = ' ' * level;
-
-    if (node is Element) {
-      // Extract tag information
-      final tagExtractor = _TagDataExtractor.parseElement(node);
-
-      // Write opening tag
-      buffer.write('$indent${tagExtractor.startingTag}\n');
-
-      // Process children with increased indentation
-      for (final child in node.nodes) {
-        _prettyPrint(child, level + 2, buffer);
-      }
-
-      // Write closing tag
-      buffer.write('$indent${tagExtractor.closingTag}\n');
-    } else if (node.nodeType == Node.COMMENT_NODE) {
-      // Handle comment nodes
-      buffer.write('$indent<!--${node.data}-->\n');
-    } else if (node.nodeType == Node.TEXT_NODE) {
-      // Handle text nodes
-      final textContent = node.data.trim();
-      if (textContent.isNotEmpty) {
-        buffer.write('$indent$textContent\n');
-      }
-    } else {
-      // Handle other node types
-      final nodeContent = node.data.trim();
-      if (nodeContent.isNotEmpty) {
-        buffer.write('$indent$nodeContent\n');
+    final strBuffer = StringBuffer();
+    void indent(int? indentation) {
+      for (int i = 0; i < (indentation ?? 1); i++) {
+        strBuffer.write(' ');
       }
     }
+
+    final topElementData = _TagDataExtractor.parseElement(topElement.element!);
+    final topClosingTag = topElementData.closingTag;
+    strBuffer
+      ..write(topElementData.startingTag)
+      ..write('\n');
+
+    final lists = <_TagDataExtractor>[];
+    if (topElement.element!.hasChildNodes()) {
+      final children = topElement.element!.nodes;
+
+      var spaces = 1;
+      for (final child in children) {
+        spaces = 1;
+        final current = _TagDataExtractor.parseNode(child, indentation: spaces);
+        lists.add(current);
+
+        final descendants =
+            child.nodes
+                .map((node) {
+                  spaces++;
+                  return _recursiveNodeExtractorSearch(
+                    node,
+                    indentation: spaces,
+                  );
+                })
+                .expand((e) => e)
+                .toList();
+        lists.addAll(descendants);
+      }
+    }
+
+    _TagDataExtractor? prevNode;
+    for (final item in lists) {
+      indent(item.indentation);
+      strBuffer
+        ..write(item.isElement ? item.startingTag : item.node.data)
+        ..write('\n');
+
+      if (prevNode != null && prevNode.isElement && prevNode != item) {
+        indent(prevNode.indentation);
+        strBuffer
+          ..write(prevNode.closingTag)
+          ..write('\n');
+      }
+
+      prevNode = item;
+    }
+
+    strBuffer.write(topClosingTag);
+    return strBuffer.toString();
   }
 
   Bs4Element get _bs4 => element != null ? element!.bs4 : findFirstAny()!;
