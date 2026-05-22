@@ -6,6 +6,10 @@ import 'package:html/dom.dart';
 import 'interface/interface.dart';
 import 'tags.dart';
 
+final _firstChildRegex = RegExp(r':first-child\b');
+final _nthChildRegex = RegExp(r':nth-child\((.*?)\)');
+final _nthChildFormulaRegex = RegExp(r'^\s*([-+]?\d*)?n\s*([-+]\s*\d+)?\s*$');
+
 ///
 class Shared extends Tags implements ITreeSearcher, IOutput {
   @override
@@ -24,6 +28,10 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
     String? selector,
   }) {
     if (selector != null) {
+      if (selector.contains(':nth-child') ||
+          selector.contains(':first-child')) {
+        return findAll('', selector: selector).firstOrNull;
+      }
       return ((element ?? doc).querySelector(selector) as Element?)?.bs4;
     }
     if (id == null && class_ == null && regex == null && string == null) {
@@ -32,10 +40,9 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
       if (attrs == null && !anyTag && validTag) {
         return ((element ?? doc).querySelector(name) as Element?)?.bs4;
       }
-      final cssSelector =
-          ((!validTag || anyTag) && (attrs == null))
-              ? '*'
-              : _selectorBuilder(tagName: validTag ? name : '*', attrs: attrs!);
+      final cssSelector = ((!validTag || anyTag) && (attrs == null))
+          ? '*'
+          : _selectorBuilder(tagName: validTag ? name : '*', attrs: attrs!);
       return ((element ?? doc).querySelector(cssSelector) as Element?)?.bs4;
     }
     return findAll(
@@ -63,9 +70,50 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
     assert(limit == null || limit >= 0);
 
     if (selector != null) {
-      return ((element ?? doc).querySelectorAll(selector) as List<Element>)
-          .map((e) => e.bs4)
-          .toList();
+      // Handle :nth-child / :first-child if present
+      String cleanSelector = selector;
+      var hasFirstChild = false;
+      var nthChildExpression = '';
+
+      if (_firstChildRegex.hasMatch(selector)) {
+        hasFirstChild = true;
+        cleanSelector = cleanSelector.replaceAll(_firstChildRegex, '');
+      } else if (_nthChildRegex.hasMatch(selector)) {
+        final match = _nthChildRegex.firstMatch(selector);
+        if (match != null) {
+          nthChildExpression = match.group(1) ?? '';
+          cleanSelector = cleanSelector.replaceAll(_nthChildRegex, '');
+        }
+      }
+
+      // If selector becomes empty (matches *), use *
+      if (cleanSelector.trim().isEmpty) {
+        cleanSelector = '*';
+      }
+
+      final elements =
+          ((element ?? doc).querySelectorAll(cleanSelector) as List<Element>)
+              .map((e) => e.bs4)
+              .toList();
+
+      if (hasFirstChild) {
+        return elements.where((e) {
+          final parent = e.element?.parentNode;
+          if (parent == null) return false;
+          // :first-child means it is the first ELEMENT child
+          // package:html parent.children returns elements only
+          final children = parent.children;
+          return children.isNotEmpty && children.first == e.element;
+        }).toList();
+      }
+
+      if (nthChildExpression.isNotEmpty) {
+        return elements.where((e) {
+          return _isNthChildMatch(e, nthChildExpression);
+        }).toList();
+      }
+
+      return elements;
     }
     bool anyTag = _isAnyTag(name);
     bool validTag = _isValidTag(name);
@@ -83,13 +131,13 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
       );
       return _limitedList(filtered, limit);
     }
-    final cssSelector =
-        ((!validTag || anyTag) && (attrs == null))
-            ? '*'
-            : _selectorBuilder(tagName: validTag ? name : '*', attrs: attrs!);
-    final elements = ((element ?? doc).querySelectorAll(cssSelector)
-            as List<Element>)
-        .map((e) => e.bs4);
+    final cssSelector = ((!validTag || anyTag) && (attrs == null))
+        ? '*'
+        : _selectorBuilder(tagName: validTag ? name : '*', attrs: attrs!);
+    final elements =
+        ((element ?? doc).querySelectorAll(cssSelector) as List<Element>).map(
+          (e) => e.bs4,
+        );
 
     final filtered = _filterResults(
       allResults: elements.toList(),
@@ -481,17 +529,13 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
         final current = _TagDataExtractor.parseNode(child, indentation: spaces);
         lists.add(current);
 
-        final descendants =
-            child.nodes
-                .map((node) {
-                  spaces++;
-                  return _recursiveNodeExtractorSearch(
-                    node,
-                    indentation: spaces,
-                  );
-                })
-                .expand((e) => e)
-                .toList();
+        final descendants = child.nodes
+            .map((node) {
+              spaces++;
+              return _recursiveNodeExtractorSearch(node, indentation: spaces);
+            })
+            .expand((e) => e)
+            .toList();
         lists.addAll(descendants);
       }
     }
@@ -564,27 +608,26 @@ List<Bs4Element> _filterResults({
 
   var filtered = List.of(allResults);
   if (class_ != null) {
-    filtered =
-        List.of(filtered).where((e) => e.className.contains(class_)).toList();
+    filtered = List.of(
+      filtered,
+    ).where((e) => e.className.contains(class_)).toList();
   }
   if (id != null) {
     filtered = List.of(filtered).where((e) => e.id == id).toList();
   }
   if (regex != null) {
     final regExp = regex.asRegExp;
-    filtered =
-        List.of(filtered).where((e) {
-          if (regExp.hasMatch(e.name ?? '')) return true;
-          return false;
-        }).toList();
+    filtered = List.of(filtered).where((e) {
+      if (regExp.hasMatch(e.name ?? '')) return true;
+      return false;
+    }).toList();
   }
   if (string != null) {
     final regExp = string.asRegExp;
-    filtered =
-        List.of(filtered).where((e) {
-          if (regExp.hasMatch(e.string)) return true;
-          return false;
-        }).toList();
+    filtered = List.of(filtered).where((e) {
+      if (regExp.hasMatch(e.string)) return true;
+      return false;
+    }).toList();
   }
   return filtered;
 }
@@ -688,4 +731,65 @@ Iterable<_TagDataExtractor> _recursiveNodeExtractorSearch(
   for (final e in node.nodes) {
     yield* _recursiveNodeExtractorSearch(e, indentation: indentation ?? 1);
   }
+}
+
+bool _isNthChildMatch(Bs4Element bs4, String expression) {
+  expression = expression.trim();
+  final parent = bs4.element?.parentNode;
+  if (parent == null) return false;
+
+  final children = parent.children;
+  final index = children.indexOf(bs4.element!) + 1; // 1-based index
+
+  if (expression == 'odd') {
+    return index % 2 == 1;
+  }
+  if (expression == 'even') {
+    return index % 2 == 0;
+  }
+
+  // Handle integers
+  final nIndex = int.tryParse(expression);
+  if (nIndex != null) {
+    return index == nIndex;
+  }
+
+  // Handle formula An+B
+  // 2n+1, 3n+0, -n+3, etc.
+  final match = _nthChildFormulaRegex.firstMatch(expression);
+  if (match != null) {
+    var aStr = match.group(1);
+    var bStr = match.group(2)?.replaceAll(' ', '');
+
+    int a;
+    if (aStr == null || aStr.isEmpty) {
+      a = 1;
+    } else if (aStr == '-') {
+      a = -1;
+    } else if (aStr == '+') {
+      a = 1;
+    } else {
+      a = int.parse(aStr);
+    }
+
+    int b = (bStr == null || bStr.isEmpty) ? 0 : int.parse(bStr);
+
+    // index = a * n + b
+    // index - b = a * n
+    // (index - b) % a == 0 and n >= 0
+
+    if (a == 0) {
+      return index == b;
+    }
+
+    // n must be non-negative integer
+    // n = (index - b) / a
+    if ((index - b) % a == 0) {
+      final n = (index - b) ~/ a;
+      return n >= 0;
+    }
+    return false;
+  }
+
+  return false;
 }

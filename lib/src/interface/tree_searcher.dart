@@ -62,6 +62,14 @@ abstract class ITreeSearcher {
   /// will be ignored. If such selector is not implemented this method
   /// will throw [UnimplementedError].
   ///
+  /// **Supported pseudo-classes**: `:nth-child()` (supports integers, keywords like `odd`/`even`, and formulas like `2n+1`) and `:first-child`.
+  ///
+  /// Examples:
+  /// ```dart
+  /// bs.find(selector: 'div > p:nth-child(2)'); // Find 2nd paragraph in a div
+  /// bs.findAll(selector: 'li:nth-child(odd)'); // Find all odd list items
+  /// ```
+  ///
   /// Use `true` as an attribute value to search any value.
   /// {@endtemplate}
   List<Bs4Element> findAll(
