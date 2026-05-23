@@ -15,6 +15,10 @@ void main() {
     final bs = BeautifulSoup(html);
 
     // :nth-child(n)
+    final p2Div = bs.find('', selector: 'div > :nth-child(2)');
+    expect(p2Div?.string, '2', reason: 'Should find 2nd paragraph');
+
+    // :nth-child(n)
     final p2 = bs.find('', selector: 'p:nth-child(2)');
     expect(p2?.string, '2', reason: 'Should find 2nd paragraph');
 

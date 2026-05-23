@@ -86,9 +86,14 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
         }
       }
 
-      // If selector becomes empty (matches *), use *
-      if (cleanSelector.trim().isEmpty) {
+      cleanSelector = cleanSelector.trim();
+      // If selector becomes empty (matches *) or ends with a combinator such as
+      // "div >" after removing :nth-child, normalize it to include the
+      // universal selector.
+      if (cleanSelector.isEmpty) {
         cleanSelector = '*';
+      } else if (RegExp(r'[>+~]\s*$').hasMatch(cleanSelector)) {
+        cleanSelector = '$cleanSelector *';
       }
 
       final elements =
