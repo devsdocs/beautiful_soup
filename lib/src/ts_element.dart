@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:html/dom.dart';
 
 import 'helpers.dart';
@@ -8,14 +8,14 @@ import 'interface/interface.dart';
 import 'shared.dart';
 
 ///
-class Bs4Element extends Shared
+class TsElement extends Shared
     implements IElement, ITreeNavigator, ITreeModifier {
-  Bs4Element._(Element element) {
+  TsElement._(Element element) {
     this.element = element;
   }
 
   ///
-  factory Bs4Element(Element element) => Bs4Element._(element);
+  factory TsElement(Element element) => TsElement._(element);
 
   bool _isDecomposed = false;
 
@@ -88,13 +88,13 @@ class Bs4Element extends Shared
   set id(String value) => _element.id = value;
 
   @override
-  List<Bs4Element> get children => _element.children.map((e) => e.bs4).toList();
+  List<TsElement> get children => _element.children.map((e) => e.bs4).toList();
 
   @override
-  List<Bs4Element> get contents => children;
+  List<TsElement> get contents => children;
 
   @override
-  List<Bs4Element> get descendants {
+  List<TsElement> get descendants {
     return _element.children
         .map((e) => recursiveSearch(e.bs4))
         .expand((e) => e)
@@ -102,12 +102,12 @@ class Bs4Element extends Shared
   }
 
   @override
-  Bs4Element? get parent => _element.parent?.bs4;
+  TsElement? get parent => _element.parent?.bs4;
 
   @override
-  List<Bs4Element> get parents {
-    final parents = <Bs4Element>[];
-    Bs4Element? elementIter = parent;
+  List<TsElement> get parents {
+    final parents = <TsElement>[];
+    TsElement? elementIter = parent;
     while (elementIter != null) {
       parents.add(elementIter);
       elementIter = elementIter.parent;
@@ -116,12 +116,12 @@ class Bs4Element extends Shared
   }
 
   @override
-  Bs4Element? get previousSibling => _element.previousElementSibling?.bs4;
+  TsElement? get previousSibling => _element.previousElementSibling?.bs4;
 
   @override
-  List<Bs4Element> get previousSiblings {
-    final previousSiblings = <Bs4Element>[];
-    Bs4Element? elementIter = previousSibling;
+  List<TsElement> get previousSiblings {
+    final previousSiblings = <TsElement>[];
+    TsElement? elementIter = previousSibling;
     while (elementIter != null) {
       previousSiblings.add(elementIter);
       elementIter = elementIter.previousSibling;
@@ -130,12 +130,12 @@ class Bs4Element extends Shared
   }
 
   @override
-  Bs4Element? get nextSibling => _element.nextElementSibling?.bs4;
+  TsElement? get nextSibling => _element.nextElementSibling?.bs4;
 
   @override
-  List<Bs4Element> get nextSiblings {
-    final nextSiblings = <Bs4Element>[];
-    Bs4Element? elementIter = nextSibling;
+  List<TsElement> get nextSiblings {
+    final nextSiblings = <TsElement>[];
+    TsElement? elementIter = nextSibling;
     while (elementIter != null) {
       nextSiblings.add(elementIter);
       elementIter = elementIter.nextSibling;
@@ -144,7 +144,7 @@ class Bs4Element extends Shared
   }
 
   @override
-  Bs4Element? get nextElement {
+  TsElement? get nextElement {
     // find within children
     final children = this.children;
     if (children.isNotEmpty) {
@@ -171,8 +171,8 @@ class Bs4Element extends Shared
   }
 
   @override
-  List<Bs4Element> get nextElements {
-    final nextElements = <Bs4Element>[];
+  List<TsElement> get nextElements {
+    final nextElements = <TsElement>[];
 
     // find within children
     nextElements.addAll(descendants);
@@ -191,7 +191,7 @@ class Bs4Element extends Shared
   }
 
   @override
-  Bs4Element? get previousElement {
+  TsElement? get previousElement {
     // find within prev sibling
     final prevSibling = previousSibling;
     if (prevSibling != null) {
@@ -203,8 +203,8 @@ class Bs4Element extends Shared
   }
 
   @override
-  List<Bs4Element> get previousElements {
-    final prevElements = <Bs4Element>[];
+  List<TsElement> get previousElements {
+    final prevElements = <TsElement>[];
 
     // find within prev siblings
     prevElements.addAll(previousSiblings);
@@ -270,11 +270,10 @@ class Bs4Element extends Shared
 
     // find within children
     if (element.hasChildNodes()) {
-      final descendants =
-          element.nodes
-              .map((node) => recursiveNodeSearch(node))
-              .expand((e) => e)
-              .toList();
+      final descendants = element.nodes
+          .map((node) => recursiveNodeSearch(node))
+          .expand((e) => e)
+          .toList();
       nextParsedAll.addAll(descendants);
     }
 
@@ -367,30 +366,26 @@ class Bs4Element extends Shared
   }
 
   @override
-  void append(Bs4Element element) => _element.append(element._element);
+  void append(TsElement element) => _element.append(element._element);
 
   @override
-  void extend(List<Bs4Element> element) {
+  void extend(List<TsElement> element) {
     for (final e in element) {
       _element.append(e._element);
     }
   }
 
   @override
-  Bs4Element newTag(
-    String? name, {
-    Map<String, String>? attrs,
-    String? string,
-  }) {
-    return BeautifulSoup.newTag(name, attrs: attrs, string: string);
+  TsElement newTag(String? name, {Map<String, String>? attrs, String? string}) {
+    return TypedSoup.newTag(name, attrs: attrs, string: string);
   }
 
   @override
-  void insert(int position, Bs4Element element) =>
+  void insert(int position, TsElement element) =>
       _element.nodes.insert(position, element._element);
 
   @override
-  void insertBefore(Bs4Element element, [Bs4Element? ref]) {
+  void insertBefore(TsElement element, [TsElement? ref]) {
     if (ref == null) {
       insert(0, element);
     } else {
@@ -399,7 +394,7 @@ class Bs4Element extends Shared
   }
 
   @override
-  void insertAfter(Bs4Element element, [Bs4Element? ref]) {
+  void insertAfter(TsElement element, [TsElement? ref]) {
     if (ref == null) {
       _element.nodes.add(element._element);
     } else {
@@ -422,7 +417,7 @@ class Bs4Element extends Shared
   void clear() => element = _element.clone(false);
 
   @override
-  Bs4Element extract() => (_element.remove() as Element).bs4;
+  TsElement extract() => (_element.remove() as Element).bs4;
 
   @override
   void decompose() {
@@ -434,11 +429,11 @@ class Bs4Element extends Shared
   }
 
   @override
-  Bs4Element replaceWith(Bs4Element otherElement) =>
+  TsElement replaceWith(TsElement otherElement) =>
       (_element.replaceWith(otherElement._element) as Element).bs4;
 
   @override
-  Bs4Element wrap(Bs4Element newParentElement) {
+  TsElement wrap(TsElement newParentElement) {
     final newElement = newParentElement._element.clone(true)
       ..nodes.add(_element.clone(true));
 
@@ -451,7 +446,7 @@ class Bs4Element extends Shared
   }
 
   @override
-  Bs4Element? unwrap() {
+  TsElement? unwrap() {
     for (final child in _element.nodes) {
       if (child.nodeType == Node.ELEMENT_NODE) {
         final index = _element.nodes.indexOf(child);
@@ -481,7 +476,7 @@ class Bs4Element extends Shared
   void reparentChildren(Node newParent) => _element.reparentChildren(newParent);
 
   @override
-  Bs4Element clone(bool deep) => (_element.clone(deep)).bs4;
+  TsElement clone(bool deep) => (_element.clone(deep)).bs4;
 
   @override
   String? operator [](String name) => _element.attributes[name];

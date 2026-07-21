@@ -1,13 +1,13 @@
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/fixtures.dart';
 
 void main() {
-  late BeautifulSoup bs;
+  late TypedSoup bs;
 
   setUp(() {
-    bs = BeautifulSoup(html_doc);
+    bs = TypedSoup(html_doc);
   });
 
   group('Element', () {
@@ -48,7 +48,7 @@ void main() {
       });
 
       test('does not find innerHtml (empty string)', () {
-        bs = BeautifulSoup.fragment(html_placeholder_empty);
+        bs = TypedSoup.fragment(html_placeholder_empty);
         final bs4 = bs.findFirstAny();
 
         expect(bs4, isNotNull);
@@ -121,7 +121,7 @@ void main() {
 
     group('getAttrValue', () {
       test('finds attribute', () {
-        bs = BeautifulSoup.fragment('<b id="boldest">bold</b>');
+        bs = TypedSoup.fragment('<b id="boldest">bold</b>');
         final bs4 = bs.findFirstAny();
 
         expect(bs4, isNotNull);

@@ -1,13 +1,13 @@
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/fixtures.dart';
 
 void main() {
-  late BeautifulSoup bs;
+  late TypedSoup bs;
 
   setUp(() {
-    bs = BeautifulSoup(html_doc);
+    bs = TypedSoup(html_doc);
   });
 
   group('Tags', () {
@@ -31,7 +31,7 @@ void main() {
       });
 
       test('finds a and i tags', () {
-        bs = BeautifulSoup.fragment(
+        bs = TypedSoup.fragment(
           '<a href="http://example.com/">I linked to <i>example.com</i></a>',
         );
         var bs4 = bs.html;
@@ -51,9 +51,7 @@ void main() {
       });
 
       test('finds p and b tags', () {
-        bs = BeautifulSoup.fragment(
-          '<div><p><b>I wish I was bold.</b></p></div>',
-        );
+        bs = TypedSoup.fragment('<div><p><b>I wish I was bold.</b></p></div>');
         var bs4 = bs.html;
         expect(bs4, isNull);
 
@@ -70,7 +68,7 @@ void main() {
       });
 
       test('finds h1 - h6 tags', () {
-        bs = BeautifulSoup('''
+        bs = TypedSoup('''
         <html>
           <head>
             <title>Title of the document</title>
@@ -98,17 +96,17 @@ void main() {
         final h5 = body.h5;
         final h6 = body.h6;
         expect(
-          <Bs4Element?>[h1, h2, h3, h4, h5, h6].every((e) => e != null),
+          <TsElement?>[h1, h2, h3, h4, h5, h6].every((e) => e != null),
           isTrue,
         );
         expect(
-          <Bs4Element>[h1!, h2!, h3!, h4!, h5!, h6!].map((e) => e.name),
+          <TsElement>[h1!, h2!, h3!, h4!, h5!, h6!].map((e) => e.name),
           equals(<String>['h1', 'h2', 'h3', 'h4', 'h5', 'h6']),
         );
       });
 
       test('finds img and a tags', () {
-        bs = BeautifulSoup.fragment('''
+        bs = TypedSoup.fragment('''
           <a href="default.asp">
             <img src="smiley.gif" alt="HTML tutorial" style="width:42px;height:42px;">
           </a>
@@ -127,7 +125,7 @@ void main() {
       });
 
       test('finds table tags', () {
-        bs = BeautifulSoup.fragment('''
+        bs = TypedSoup.fragment('''
           <table>
             <tr>
               <th>Company</th>
@@ -153,7 +151,7 @@ void main() {
       });
 
       test('finds lists related tags', () {
-        bs = BeautifulSoup.fragment('''
+        bs = TypedSoup.fragment('''
           <div>
             <ul>
               <li>Coffee</li>

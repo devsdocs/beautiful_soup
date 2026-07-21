@@ -2,11 +2,11 @@ import 'dart:collection';
 
 import 'package:html/dom.dart';
 
-import '../bs4_element.dart';
+import '../ts_element.dart';
 
 /// Most of the implementation comes from [`html` Dart package](https://pub.dev/packages/html).
 abstract class IElement {
-  /// {@template bs4element_name}
+  /// {@template TsElement_name}
   /// Getter/setter of the **tag name** of the element.
   ///
   /// Same as [element.localName].
@@ -81,16 +81,16 @@ abstract class IElement {
   /// copied as well. If deep is `false`, then only this node is copied.
   ///
   /// Copied from [Element].
-  Bs4Element clone(bool deep);
+  TsElement clone(bool deep);
 
-  /// {@template bs4element_getAttr}
+  /// {@template TsElement_getAttr}
   /// Gets an attribute value by [name].
   ///
   /// Returns `null` if attribute does not exist.
   /// {@endtemplate}
   String? operator [](String name);
 
-  /// {@macro bs4element_getAttr}
+  /// {@macro TsElement_getAttr}
   String? getAttrValue(String name);
 
   /// Returns `true` if the element has defined this attribute.

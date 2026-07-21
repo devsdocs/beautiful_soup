@@ -1,12 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:html/dom.dart';
 
-import '../bs4_element.dart';
+import '../ts_element.dart';
 
-/// Contains methods from [Searching the tree](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#searching-the-tree).
+/// Contains methods from [Searching the tree](https://www.crummy.com/software/TypedSoup/bs4/doc/#searching-the-tree).
 abstract class ITreeSearcher {
   /// Returns the top most (first) element of the parse tree, of any tag type.
-  Bs4Element? findFirstAny();
+  TsElement? findFirstAny();
 
   /// Looks through a tag’s descendants and retrieves all descendants
   /// that match your filters.
@@ -72,7 +72,7 @@ abstract class ITreeSearcher {
   ///
   /// Use `true` as an attribute value to search any value.
   /// {@endtemplate}
-  List<Bs4Element> findAll(
+  List<TsElement> findAll(
     String name, {
     String? id,
     String? class_,
@@ -95,7 +95,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  Bs4Element? find(
+  TsElement? find(
     String name, {
     String? id,
     String? class_,
@@ -115,7 +115,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  Bs4Element? findParent(
+  TsElement? findParent(
     String name, {
     String? id,
     String? class_,
@@ -131,7 +131,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  List<Bs4Element> findParents(
+  List<TsElement> findParents(
     String name, {
     String? id,
     String? class_,
@@ -152,7 +152,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  Bs4Element? findNextSibling(
+  TsElement? findNextSibling(
     String name, {
     String? id,
     String? class_,
@@ -166,7 +166,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  List<Bs4Element> findNextSiblings(
+  List<TsElement> findNextSiblings(
     String name, {
     String? id,
     String? class_,
@@ -188,7 +188,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  Bs4Element? findPreviousSibling(
+  TsElement? findPreviousSibling(
     String name, {
     String? id,
     String? class_,
@@ -202,7 +202,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  List<Bs4Element> findPreviousSiblings(
+  List<TsElement> findPreviousSiblings(
     String name, {
     String? id,
     String? class_,
@@ -223,7 +223,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  Bs4Element? findNextElement(
+  TsElement? findNextElement(
     String name, {
     String? id,
     String? class_,
@@ -237,7 +237,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  List<Bs4Element> findAllNextElements(
+  List<TsElement> findAllNextElements(
     String name, {
     String? id,
     String? class_,
@@ -258,7 +258,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  Bs4Element? findPreviousElement(
+  TsElement? findPreviousElement(
     String name, {
     String? id,
     String? class_,
@@ -272,7 +272,7 @@ abstract class ITreeSearcher {
   ///
   /// {@macro tree_searcher_find}
   /// {@macro tree_searcher_find2}
-  List<Bs4Element> findAllPreviousElements(
+  List<TsElement> findAllPreviousElements(
     String name, {
     String? id,
     String? class_,

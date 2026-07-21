@@ -1,4 +1,4 @@
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:beautiful_soup_dart/src/helpers.dart';
 import 'package:html/parser.dart';
 import 'package:test/test.dart';
@@ -6,14 +6,14 @@ import 'package:test/test.dart';
 import 'fixtures/fixtures.dart';
 
 void main() {
-  late BeautifulSoup bs;
+  late TypedSoup bs;
 
   setUp(() {
-    bs = BeautifulSoup(html_doc);
+    bs = TypedSoup(html_doc);
   });
 
   group('Extensions', () {
-    group('Bs4Element from html.Element', () {
+    group('TsElement from html.Element', () {
       test('parsing fragment does not add html tag', () {
         final bs4 = parse(html_doc).querySelector('p')?.bs4;
         expect(bs4, isNotNull);

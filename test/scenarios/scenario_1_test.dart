@@ -1,14 +1,14 @@
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:test/test.dart';
 
 import '../fixtures/fixtures.dart';
 
 void main() {
-  late BeautifulSoup bs;
+  late TypedSoup bs;
 
   group('George R. R. Martin blog', () {
     setUp(() {
-      bs = BeautifulSoup(scenario_1_html);
+      bs = TypedSoup(scenario_1_html);
     });
 
     group('searches and extracts elements correctly', () {

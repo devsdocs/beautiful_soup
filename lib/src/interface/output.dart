@@ -1,13 +1,13 @@
-import '../bs_soup.dart';
+import '../ts_soup.dart';
 
-/// Contains methods from [Output](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#output).
+/// Contains methods from [Output](https://www.crummy.com/software/TypedSoup/bs4/doc/#output).
 // TODO: improve prettify
 abstract class IOutput {
-  /// The method will turn a [BeautifulSoup] parse tree into a nicely
+  /// The method will turn a [TypedSoup] parse tree into a nicely
   /// formatted [String], with a separate line for each tag and
   /// each string.
   ///
-  /// You can call [prettify] on the top-level BeautifulSoup object, or on
+  /// You can call [prettify] on the top-level TypedSoup object, or on
   /// any of its element objects.
   ///
   /// Since it adds whitespace (in the form of newlines), [prettify] changes
@@ -20,7 +20,7 @@ abstract class IOutput {
   /// {@template output_getText}
   /// Returns the text of an element.
   ///
-  /// Same like `bs4element.string`.
+  /// Same like `TsElement.string`.
   /// {@endtemplate}
   ///
   /// \- [separator] - Strings will be concatenated using this separator.

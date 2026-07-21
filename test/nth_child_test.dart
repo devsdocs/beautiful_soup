@@ -1,4 +1,4 @@
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -12,7 +12,7 @@ void main() {
   <p>5</p>
 </div>
 ''';
-    final bs = BeautifulSoup(html);
+    final bs = TypedSoup(html);
 
     final p2DivFirst = bs.find('', selector: 'div');
     final p2DivLast = p2DivFirst?.find('', selector: ':nth-child(2)');

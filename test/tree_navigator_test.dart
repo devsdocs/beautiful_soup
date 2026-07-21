@@ -1,14 +1,14 @@
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:html/dom.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/fixtures.dart';
 
 void main() {
-  late BeautifulSoup bs;
+  late TypedSoup bs;
 
   setUp(() {
-    bs = BeautifulSoup(html_doc);
+    bs = TypedSoup(html_doc);
   });
 
   group('TreeNavigator', () {
@@ -83,7 +83,7 @@ void main() {
       });
 
       test("does not find text", () {
-        bs = BeautifulSoup(html_prettify);
+        bs = TypedSoup(html_prettify);
         final bs4 = bs.head;
         expect(bs4, isNotNull);
         expect(bs4!.string, equals(''));
@@ -112,7 +112,7 @@ void main() {
       });
 
       test("does not find text", () {
-        bs = BeautifulSoup(html_prettify);
+        bs = TypedSoup(html_prettify);
         final bs4 = bs.head;
         expect(bs4, isNotNull);
         expect(bs4!.strippedStrings, equals(''));
@@ -131,7 +131,7 @@ void main() {
       });
 
       test("does not have parent", () {
-        bs = BeautifulSoup.fragment(html_placeholder);
+        bs = TypedSoup.fragment(html_placeholder);
         final bs4 = bs.findFirstAny();
         expect(bs4, isNotNull);
         expect(bs4!.name, equals('a'));
@@ -151,7 +151,7 @@ void main() {
       });
 
       test("does not have parents", () {
-        bs = BeautifulSoup.fragment(html_placeholder);
+        bs = TypedSoup.fragment(html_placeholder);
         final bs4 = bs.findFirstAny();
         expect(bs4, isNotNull);
         expect(bs4!.parents, isEmpty);
@@ -396,7 +396,7 @@ void main() {
 
     group('nextParsed', () {
       setUp(() {
-        bs = BeautifulSoup.fragment(html_comment);
+        bs = TypedSoup.fragment(html_comment);
       });
 
       test("finds next parsed element, within parent", () {
@@ -430,7 +430,7 @@ void main() {
       });
 
       test("does not find next parsed (bottom most element)", () {
-        bs = BeautifulSoup.fragment(html_placeholder_empty);
+        bs = TypedSoup.fragment(html_placeholder_empty);
         final bs4 = bs.a;
         expect(bs4, isNotNull);
 
@@ -441,7 +441,7 @@ void main() {
 
     group('nextParsedAll', () {
       setUp(() {
-        bs = BeautifulSoup.fragment(html_comment);
+        bs = TypedSoup.fragment(html_comment);
       });
 
       test("finds all next parsed elements, within children, "
@@ -478,7 +478,7 @@ void main() {
 
     group('previousParsed', () {
       setUp(() {
-        bs = BeautifulSoup.fragment(html_comment);
+        bs = TypedSoup.fragment(html_comment);
       });
 
       test("finds prev parsed element, within prev siblings", () {
@@ -492,7 +492,7 @@ void main() {
       });
 
       test("finds prev parsed element, within parent", () {
-        bs = BeautifulSoup(html_prettify);
+        bs = TypedSoup(html_prettify);
         final bs4 = bs.head;
         expect(bs4, isNotNull);
 
@@ -513,7 +513,7 @@ void main() {
 
     group('previousParsedAll', () {
       setUp(() {
-        bs = BeautifulSoup.fragment(html_comment);
+        bs = TypedSoup.fragment(html_comment);
       });
 
       test("finds all prev parsed elements, within children, "

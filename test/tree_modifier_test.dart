@@ -1,15 +1,15 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/fixtures.dart';
 
 void main() {
-  late BeautifulSoup bs;
+  late TypedSoup bs;
 
   setUp(() {
-    bs = BeautifulSoup(html_doc);
+    bs = TypedSoup(html_doc);
   });
 
   group('TreeModifier', () {
@@ -32,7 +32,7 @@ void main() {
     group('append', () {
       test('appends an element to the current one', () {
         final bs4 = bs.p;
-        final anotherElement = BeautifulSoup.fragment(html_heading).h1;
+        final anotherElement = TypedSoup.fragment(html_heading).h1;
         expect(bs4, isNotNull);
         expect(
           bs4!.outerHtml,
@@ -54,8 +54,8 @@ void main() {
     group('extend', () {
       test('appends elements to the current one', () {
         final bs4 = bs.p;
-        final anotherElement = BeautifulSoup.fragment(html_heading).h1;
-        final anotherElement2 = BeautifulSoup.fragment(html_placeholder).a;
+        final anotherElement = TypedSoup.fragment(html_heading).h1;
+        final anotherElement2 = TypedSoup.fragment(html_placeholder).a;
         expect(bs4, isNotNull);
         expect(
           bs4!.outerHtml,
@@ -64,7 +64,7 @@ void main() {
         expect(anotherElement, isNotNull);
         expect(anotherElement2, isNotNull);
 
-        bs4.extend(<Bs4Element>[anotherElement!, anotherElement2!]);
+        bs4.extend(<TsElement>[anotherElement!, anotherElement2!]);
         expect(
           bs4.outerHtml,
           equals(
@@ -268,7 +268,7 @@ void main() {
 
     group('decompose', () {
       test('removes and completely destroys the element and its contents', () {
-        bs = BeautifulSoup.fragment(
+        bs = TypedSoup.fragment(
           '<a href="http://example.com/">I linked to <i>example.com</i></a>',
         );
 
@@ -342,7 +342,7 @@ void main() {
 
     group('set tag name', () {
       test('changes tag name', () {
-        bs = BeautifulSoup.fragment('<b class="boldest">Extremely bold</b>');
+        bs = TypedSoup.fragment('<b class="boldest">Extremely bold</b>');
 
         final bs4 = bs.findFirstAny();
         expect(bs4, isNotNull);
@@ -369,7 +369,7 @@ void main() {
 
     group('sets and removes attributes', () {
       test('sets and removes attributes, example #1', () {
-        bs = BeautifulSoup.fragment('<b id="boldest">bold</b>');
+        bs = TypedSoup.fragment('<b id="boldest">bold</b>');
         final bs4 = bs.findFirstAny();
 
         expect(bs4, isNotNull);
@@ -407,7 +407,7 @@ void main() {
       });
 
       test('sets and removes attributes, example #2', () {
-        bs = BeautifulSoup.fragment(
+        bs = TypedSoup.fragment(
           '<blockquote class="verybold" id="1">Extremely bold</blockquote>',
         );
         final bs4 = bs.findFirstAny();
@@ -428,7 +428,7 @@ void main() {
 
     group('newTag', () {
       test('creates new tag from bs4 instance', () {
-        bs = BeautifulSoup.fragment('<b class="boldest">Extremely bold</b>');
+        bs = TypedSoup.fragment('<b class="boldest">Extremely bold</b>');
 
         final bs4 = bs.findFirstAny();
         expect(bs4, isNotNull);
@@ -456,7 +456,7 @@ void main() {
       });
 
       test('creates new tag from static method', () {
-        final newTag = BeautifulSoup.newTag(
+        final newTag = TypedSoup.newTag(
           'a',
           attrs: {'href': 'www.example.com'},
         );
@@ -467,7 +467,7 @@ void main() {
 
     group('clear', () {
       test('removes content of the tag', () {
-        bs = BeautifulSoup.fragment(
+        bs = TypedSoup.fragment(
           '<a href="http://example.com/">I linked to <i>example.com</i></a>',
         );
 
@@ -488,7 +488,7 @@ void main() {
 
     group('wrap', () {
       test('wraps tag', () {
-        bs = BeautifulSoup.fragment('<p>I wish I was bold.</p>');
+        bs = TypedSoup.fragment('<p>I wish I was bold.</p>');
 
         final bs4 = bs.findFirstAny();
         expect(bs4, isNotNull);
@@ -496,7 +496,7 @@ void main() {
 
         // wrap and return newly wrapped tag
         expect(
-          bs4.wrap(BeautifulSoup.newTag('div')).toString(),
+          bs4.wrap(TypedSoup.newTag('div')).toString(),
           '<div><p>I wish I was bold.</p></div>',
         );
         expect(bs4.name, 'div');
@@ -505,7 +505,7 @@ void main() {
 
     group('unwrap', () {
       test('unwraps tag', () {
-        bs = BeautifulSoup.fragment(
+        bs = TypedSoup.fragment(
           '<a href="http://example.com/">I linked to <i>example.com</i></a>',
         );
 

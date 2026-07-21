@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 
 const html_doc = """
 <html>
@@ -23,9 +23,9 @@ const html_doc = """
 
 void main() {
   // 1. parse a document
-  BeautifulSoup bs = BeautifulSoup(
+  TypedSoup ts = TypedSoup(
     html_doc,
-  ); // use BeautifulSoup.fragment(html_doc_string) if you parse a part of html
+  ); // use TypedSoup.fragment(html_doc_string) if you parse a part of html
 
   // 2. navigate quickly to any element
   print(
@@ -54,10 +54,9 @@ void main() {
   ); // finds by "href" attribute
 
   // 3. perform any other actions for the navigated element
-  Bs4Element bs4 =
-      bs
-          .body!
-          .p!; // quickly with tags, finds and navigates to: "<p class="title"><b>The Dormouse's story</b></p>"
+  TsElement ts = bs
+      .body!
+      .p!; // quickly with tags, finds and navigates to: "<p class="title"><b>The Dormouse's story</b></p>"
   bs4.name; // get tag name, finds: "p"
   bs4.string; // get text, finds: "The Dormouse's story";
   bs4.innerHtml; // get html elements inside the element, finds: "<b>The Dormouse's story</b>"
@@ -66,11 +65,10 @@ void main() {
   bs4['class'] =
       'board'; // change class attribute value from 'title' to 'board'
 
-  Bs4Element bs4Alt =
-      bs.find(
-        'p',
-        attrs: {'class': 'story'},
-      )!; // with query func you can specify attributes
+  TsElement bs4Alt = bs.find(
+    'p',
+    attrs: {'class': 'story'},
+  )!; // with query func you can specify attributes
   bs4.replaceWith(bs4Alt); // replace with other element
   bs4Alt
       .children; // get all element's children elements, finds: list with four "a" elements

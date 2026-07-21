@@ -1,14 +1,14 @@
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:html/dom.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/fixtures.dart';
 
 void main() {
-  late BeautifulSoup bs;
+  late TypedSoup bs;
 
   setUp(() {
-    bs = BeautifulSoup(html_doc);
+    bs = TypedSoup(html_doc);
   });
 
   group('TreeSearcher', () {
@@ -318,7 +318,7 @@ void main() {
       });
 
       test('finds by class_, variants', () {
-        bs = BeautifulSoup.fragment('<p class="body strikeout"></p>');
+        bs = TypedSoup.fragment('<p class="body strikeout"></p>');
 
         final element1 = bs.find('p', class_: 'strikeout');
         expect(element1.toString(), '<p class="body strikeout"></p>');
@@ -480,7 +480,7 @@ void main() {
         expect(nextSiblings.map((e) => e.name), equals(<String>['body']));
       });
 
-      test('does not find from BeautifulSoup instance', () {
+      test('does not find from TypedSoup instance', () {
         final elements = bs.findNextSiblings('*');
         expect(elements.isEmpty, isTrue);
       });
@@ -506,7 +506,7 @@ void main() {
       });
 
       test('finds with defined tag', () {
-        bs = BeautifulSoup.fragment(html_comment);
+        bs = TypedSoup.fragment(html_comment);
         final element = bs.find('br');
         expect(element, isNotNull);
 
@@ -545,7 +545,7 @@ void main() {
         );
       });
 
-      test('finds from BeautifulSoup instance', () {
+      test('finds from TypedSoup instance', () {
         final elements = bs.findPreviousSiblings('*');
         expect(elements.isEmpty, isTrue);
       });
@@ -576,7 +576,7 @@ void main() {
         expect(nextElement!.toString(), equals('<p class="story">...</p>'));
       });
 
-      test('finds from BeautifulSoup instance', () {
+      test('finds from TypedSoup instance', () {
         final element = bs.findNextElement('*');
         expect(element, isNotNull);
         expect(element!.name, equals('head'));
@@ -621,7 +621,7 @@ void main() {
         );
       });
 
-      test('finds from BeautifulSoup instance', () {
+      test('finds from TypedSoup instance', () {
         final elements = bs.findAllNextElements('*');
         expect(elements.length, 11);
         expect(
@@ -707,7 +707,7 @@ void main() {
         expect(prevElements.isEmpty, isTrue);
       });
 
-      test('does not find any from BeautifulSoup instance', () {
+      test('does not find any from TypedSoup instance', () {
         final elements = bs.findAllPreviousElements('*');
         expect(elements.isEmpty, isTrue);
       });
@@ -730,7 +730,7 @@ void main() {
       });
 
       test('finds with defined pattern and nodeType (url link)', () {
-        bs = BeautifulSoup.fragment(html_prettify);
+        bs = TypedSoup.fragment(html_prettify);
         final nextParsed = bs.findNextParsed(
           pattern: RegExp(r'.*(.com)'),
           nodeType: Node.TEXT_NODE,
@@ -742,7 +742,7 @@ void main() {
       });
 
       test('does not find any', () {
-        bs = BeautifulSoup.fragment(html_placeholder_empty);
+        bs = TypedSoup.fragment(html_placeholder_empty);
         final element = bs.findNextParsed();
         expect(element, isNull);
       });
@@ -783,7 +783,7 @@ void main() {
       });
 
       test('does not find any', () {
-        bs = BeautifulSoup.fragment(html_placeholder_empty);
+        bs = TypedSoup.fragment(html_placeholder_empty);
         final elements = bs.findNextParsedAll();
         expect(elements.isEmpty, isTrue);
       });
@@ -791,7 +791,7 @@ void main() {
 
     group('findPreviousParsed', () {
       test('finds with defined pattern (url link)', () {
-        bs = BeautifulSoup.fragment(html_prettify);
+        bs = TypedSoup.fragment(html_prettify);
         final element = bs.find('i');
         expect(element, isNotNull);
 
@@ -805,7 +805,7 @@ void main() {
       });
 
       test('does not find any', () {
-        bs = BeautifulSoup.fragment(html_placeholder_empty);
+        bs = TypedSoup.fragment(html_placeholder_empty);
         final element = bs.findPreviousParsed();
         expect(element, isNull);
       });
@@ -813,7 +813,7 @@ void main() {
 
     group('findPreviousParsedAll', () {
       test('finds all any', () {
-        bs = BeautifulSoup.fragment(html_comment);
+        bs = TypedSoup.fragment(html_comment);
         final element = bs.find('c');
         expect(element, isNotNull);
 
@@ -846,7 +846,7 @@ void main() {
       });
 
       test('does not find any', () {
-        bs = BeautifulSoup.fragment(html_placeholder_empty);
+        bs = TypedSoup.fragment(html_placeholder_empty);
         final elements = bs.findPreviousParsedAll();
         expect(elements.isEmpty, isTrue);
       });

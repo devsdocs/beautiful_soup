@@ -1,25 +1,25 @@
 import 'package:html/dom.dart';
 
-import '../bs4_element.dart';
+import '../ts_element.dart';
 
-/// Contains methods from [Navigating the tree](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#navigating-the-tree).
+/// Contains methods from [Navigating the tree](https://www.crummy.com/software/TypedSoup/bs4/doc/#navigating-the-tree).
 abstract class ITreeNavigator {
   /// {@template tree_navigator_children}
   /// The element's (tag's) children.
   /// {@endtemplate}
-  List<Bs4Element> get children;
+  List<TsElement> get children;
 
   /// {@macro tree_navigator_children}
   ///
   /// Same as [element.children].
-  List<Bs4Element> get contents;
+  List<TsElement> get contents;
 
   /// The element's (tag's) descendants.
   ///
   /// Similar to [children] but it iterates recursively.
-  List<Bs4Element> get descendants;
+  List<TsElement> get descendants;
 
-  /// {@template bs4element_string}
+  /// {@template TsElement_string}
   /// Returns or modifies the text of element(s).
   /// {@endtemplate}
   String get string;
@@ -32,25 +32,25 @@ abstract class ITreeNavigator {
   ///
   /// Returns null if this node either does not have a parent or its parent is
   /// not an element.
-  Bs4Element? get parent;
+  TsElement? get parent;
 
   /// The element's all parents.
   ///
   /// Iterates from the element buried deep within the document,
   /// to the very top of the document.
-  List<Bs4Element> get parents;
+  List<TsElement> get parents;
 
   /// Gets previous element on the same level of the parse tree.
-  Bs4Element? get previousSibling;
+  TsElement? get previousSibling;
 
   /// Gets all previous elements on the same level of the parse tree.
-  List<Bs4Element> get previousSiblings;
+  List<TsElement> get previousSiblings;
 
   /// Gets next element on the same level of the parse tree.
-  Bs4Element? get nextSibling;
+  TsElement? get nextSibling;
 
   /// Gets all next elements on the same level of the parse tree.
-  List<Bs4Element> get nextSiblings;
+  List<TsElement> get nextSiblings;
 
   /// {@template tree_navigator_nextElement}
   /// The [nextElement] is an element that was parsed immediately afterwards
@@ -60,12 +60,12 @@ abstract class ITreeNavigator {
   /// Use [nextParsed] if you want to get any type
   /// (doc comment, part of string, ...).
   /// {@endtemplate}
-  Bs4Element? get nextElement;
+  TsElement? get nextElement;
 
   /// {@macro tree_navigator_nextElement}
   ///
   /// Returns a list of [nextElement]s.
-  List<Bs4Element> get nextElements;
+  List<TsElement> get nextElements;
 
   /// {@template tree_navigator_previousElement}
   /// The [previousElement] is an element that was parsed
@@ -75,12 +75,12 @@ abstract class ITreeNavigator {
   /// Use [previousParsed] if you want to get any type
   /// (doc comment, part of string, ...).
   /// {@endtemplate}
-  Bs4Element? get previousElement;
+  TsElement? get previousElement;
 
   /// {@macro tree_navigator_previousElement}
   ///
   /// Returns a list of [previousElement]s.
-  List<Bs4Element> get previousElements;
+  List<TsElement> get previousElements;
 
   /// {@template tree_navigator_nextParsed}
   /// Similar to [nextElement] but it returns a [Node] of what was parsed

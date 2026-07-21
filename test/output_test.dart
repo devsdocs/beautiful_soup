@@ -1,25 +1,25 @@
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/fixtures.dart';
 
 void main() {
-  late BeautifulSoup bs;
+  late TypedSoup bs;
 
   setUp(() {
-    bs = BeautifulSoup(html_doc);
+    bs = TypedSoup(html_doc);
   });
 
   group('Output', () {
     group('toString', () {
-      test('returns html content from BeautifulSoup instance', () {
+      test('returns html content from TypedSoup instance', () {
         final html = bs.toString();
         expect(html, startsWith('<html>'));
         expect(html.substring(0, 50), contains("The Dormouse's story"));
         expect(html, endsWith('</html>'));
       });
 
-      test('returns html content from Bs4Element instance', () {
+      test('returns html content from TsElement instance', () {
         final bs4 = bs.p;
         expect(
           bs4.toString(),
@@ -29,14 +29,14 @@ void main() {
     });
 
     group('getText', () {
-      test('returns text from BeautifulSoup instance', () {
+      test('returns text from TypedSoup instance', () {
         final str = bs.getText();
         expect(str, contains("Once upon a time there"));
         expect(str, contains("and they lived at the bottom"));
         expect(str, contains("Some name"));
         expect(str, contains("..."));
 
-        // should be also same with bs4element.string
+        // should be also same with TsElement.string
         final strEl = bs.findFirstAny()?.string;
         expect(strEl, contains("Once upon a time there"));
         expect(strEl, contains("and they lived at the bottom"));
@@ -44,11 +44,11 @@ void main() {
         expect(strEl, contains("..."));
       });
 
-      test('returns text from Bs4Element instance', () {
+      test('returns text from TsElement instance', () {
         var bs4 = bs.p?.find('b');
         expect(bs4?.getText(), equals("The Dormouse's story"));
 
-        // should be also same with bs4element.string
+        // should be also same with TsElement.string
         bs4 = bs.p?.find('b');
         expect(bs4?.string, equals("The Dormouse's story"));
       });
@@ -85,7 +85,7 @@ void main() {
       });
 
       test('nested getText, fragment example', () {
-        bs = BeautifulSoup.fragment(
+        bs = TypedSoup.fragment(
           '<a href="http://example.com/">\nI linked to <i>example.com</i>\n</a>',
         );
         final bs4TextNoParams = bs.getText();
@@ -100,11 +100,11 @@ void main() {
     });
 
     group('text', () {
-      test('returns text from Bs4Element instance', () {
+      test('returns text from TsElement instance', () {
         var bs4 = bs.p?.find('b');
         expect(bs4?.text, equals("The Dormouse's story"));
 
-        // should be also same with bs4element.string
+        // should be also same with TsElement.string
         bs4 = bs.p?.find('b');
         expect(bs4?.string, equals("The Dormouse's story"));
       });
@@ -112,7 +112,7 @@ void main() {
 
     group('prettify', () {
       test('prettifies, example #1', () {
-        bs = BeautifulSoup.fragment(
+        bs = TypedSoup.fragment(
           '<b><!--Hey, buddy. Want to buy a used parser?--></b>',
         );
 
@@ -130,7 +130,7 @@ void main() {
       });
 
       test('prettifies, example #2', () {
-        bs = BeautifulSoup.fragment('<a><b>text1</b><c>text2</c></b></a>');
+        bs = TypedSoup.fragment('<a><b>text1</b><c>text2</c></b></a>');
 
         expect(
           bs.prettify(),

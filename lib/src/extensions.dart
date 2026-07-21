@@ -1,12 +1,12 @@
 import 'package:html/dom.dart';
 
-import 'bs4_element.dart';
+import 'ts_element.dart';
 
 /// Extension for [Element].
 extension ElementExt on Element {
-  /// Returns [Bs4Element] from the [Element] ([which comes from
+  /// Returns [TsElement] from the [Element] ([which comes from
   /// `html` Dart package](https://pub.dev/packages/html)).
-  Bs4Element get bs4 => Bs4Element(this);
+  TsElement get bs4 => TsElement(this);
 }
 
 /// Extensions for [Node].

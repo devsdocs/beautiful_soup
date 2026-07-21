@@ -1,9 +1,9 @@
 import 'package:html/dom.dart';
 
-import 'bs4_element.dart';
+import 'ts_element.dart';
 
 ///
-Iterable<Bs4Element> recursiveSearch(Bs4Element bs4) sync* {
+Iterable<TsElement> recursiveSearch(TsElement bs4) sync* {
   yield bs4;
   for (final e in bs4.children) {
     yield* recursiveSearch(e);

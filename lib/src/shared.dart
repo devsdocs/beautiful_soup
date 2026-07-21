@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:beautiful_soup_dart/typed_soup.dart';
 import 'package:html/dom.dart';
 
 import 'interface/interface.dart';
@@ -13,12 +13,12 @@ final _nthChildFormulaRegex = RegExp(r'^\s*([-+]?\d*)?n\s*([-+]\s*\d+)?\s*$');
 ///
 class Shared extends Tags implements ITreeSearcher, IOutput {
   @override
-  Bs4Element? findFirstAny() =>
+  TsElement? findFirstAny() =>
       ((element ?? doc).querySelector('html') as Element?)?.bs4 ??
       ((element ?? doc).querySelector('*') as Element?)?.bs4;
 
   @override
-  Bs4Element? find(
+  TsElement? find(
     String name, {
     String? id,
     String? class_,
@@ -57,7 +57,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  List<Bs4Element> findAll(
+  List<TsElement> findAll(
     String name, {
     String? id,
     String? class_,
@@ -155,7 +155,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  Bs4Element? findParent(
+  TsElement? findParent(
     String name, {
     String? id,
     String? class_,
@@ -169,7 +169,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  List<Bs4Element> findParents(
+  List<TsElement> findParents(
     String name, {
     String? id,
     String? class_,
@@ -180,7 +180,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
     int? limit,
   }) {
     assert(limit == null || limit >= 0);
-    final matched = <Bs4Element>[];
+    final matched = <TsElement>[];
 
     final bs4 = _bs4;
     final bs4Parents = bs4.parents;
@@ -205,7 +205,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  Bs4Element? findNextSibling(
+  TsElement? findNextSibling(
     String name, {
     String? id,
     String? class_,
@@ -219,7 +219,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  List<Bs4Element> findNextSiblings(
+  List<TsElement> findNextSiblings(
     String name, {
     String? id,
     String? class_,
@@ -231,7 +231,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }) {
     assert(limit == null || limit >= 0);
 
-    final matched = <Bs4Element>[];
+    final matched = <TsElement>[];
     final bs4 = _bs4;
     final bs4NextSiblings = bs4.nextSiblings;
     if (bs4NextSiblings.isEmpty) return matched;
@@ -255,7 +255,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  Bs4Element? findPreviousSibling(
+  TsElement? findPreviousSibling(
     String name, {
     String? id,
     String? class_,
@@ -273,7 +273,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  List<Bs4Element> findPreviousSiblings(
+  List<TsElement> findPreviousSiblings(
     String name, {
     String? id,
     String? class_,
@@ -285,7 +285,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }) {
     assert(limit == null || limit >= 0);
 
-    final matched = <Bs4Element>[];
+    final matched = <TsElement>[];
     final bs4 = _bs4;
     final bs4PrevSiblings = bs4.previousSiblings;
     if (bs4PrevSiblings.isEmpty) return matched;
@@ -309,7 +309,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  Bs4Element? findNextElement(
+  TsElement? findNextElement(
     String name, {
     String? id,
     String? class_,
@@ -327,7 +327,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  List<Bs4Element> findAllNextElements(
+  List<TsElement> findAllNextElements(
     String name, {
     String? id,
     String? class_,
@@ -339,7 +339,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }) {
     assert(limit == null || limit >= 0);
 
-    final matched = <Bs4Element>[];
+    final matched = <TsElement>[];
     final bs4 = _bs4;
     final bs4NextElements = bs4.nextElements;
     if (bs4NextElements.isEmpty) return matched;
@@ -363,7 +363,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  Bs4Element? findPreviousElement(
+  TsElement? findPreviousElement(
     String name, {
     String? id,
     String? class_,
@@ -381,7 +381,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }
 
   @override
-  List<Bs4Element> findAllPreviousElements(
+  List<TsElement> findAllPreviousElements(
     String name, {
     String? id,
     String? class_,
@@ -393,7 +393,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   }) {
     assert(limit == null || limit >= 0);
 
-    final matched = <Bs4Element>[];
+    final matched = <TsElement>[];
     final bs4 = _bs4;
     final bs4PrevElements = bs4.previousElements;
     if (bs4PrevElements.isEmpty) return matched;
@@ -566,7 +566,7 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
     return strBuffer.toString();
   }
 
-  Bs4Element get _bs4 => element != null ? element!.bs4 : findFirstAny()!;
+  TsElement get _bs4 => element != null ? element!.bs4 : findFirstAny()!;
 }
 
 String _selectorBuilder({
@@ -595,13 +595,13 @@ String _selectorBuilder({
   return strBuffer.toString();
 }
 
-Bs4Element _getTopElement(Bs4Element bs4) {
+TsElement _getTopElement(TsElement bs4) {
   final parents = bs4.parents;
   return parents.isEmpty ? bs4 : parents.last;
 }
 
-List<Bs4Element> _filterResults({
-  required List<Bs4Element> allResults,
+List<TsElement> _filterResults({
+  required List<TsElement> allResults,
   required String? id,
   required String? class_,
   required Pattern? regex,
@@ -641,8 +641,8 @@ bool _isAnyTag(String name) => name == '*';
 
 bool _isValidTag(String name) => name != '';
 
-List<Bs4Element> _getAllResults({
-  required Bs4Element topElement,
+List<TsElement> _getAllResults({
+  required TsElement topElement,
   required String name,
   required String? id,
   required String? class_,
@@ -675,9 +675,9 @@ List<Bs4Element> _getAllResults({
   return allResults;
 }
 
-Iterable<Bs4Element> _findMatches(
-  List<Bs4Element> allResults,
-  List<Bs4Element> filteredResults,
+Iterable<TsElement> _findMatches(
+  List<TsElement> allResults,
+  List<TsElement> filteredResults,
 ) {
   return allResults.where((anyResult) {
     return filteredResults.any((parent) {
@@ -738,7 +738,7 @@ Iterable<_TagDataExtractor> _recursiveNodeExtractorSearch(
   }
 }
 
-bool _isNthChildMatch(Bs4Element bs4, String expression) {
+bool _isNthChildMatch(TsElement bs4, String expression) {
   expression = expression.trim();
   final parent = bs4.element?.parentNode;
   if (parent == null) return false;
