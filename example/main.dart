@@ -23,7 +23,7 @@ const html_doc = """
 
 void main() {
   // 1. parse a document
-  TypedSoup ts = TypedSoup(
+  TypedSoup bs = TypedSoup(
     html_doc,
   ); // use TypedSoup.fragment(html_doc_string) if you parse a part of html
 
@@ -54,7 +54,7 @@ void main() {
   ); // finds by "href" attribute
 
   // 3. perform any other actions for the navigated element
-  TsElement ts = bs
+  TsElement bs4 = bs
       .body!
       .p!; // quickly with tags, finds and navigates to: "<p class="title"><b>The Dormouse's story</b></p>"
   bs4.name; // get tag name, finds: "p"

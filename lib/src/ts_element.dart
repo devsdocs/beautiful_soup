@@ -262,7 +262,6 @@ class TsElement extends Shared
 
   @override
   List<Node> get nextParsedAll {
-    // TODO: recursive search: iterate also in siblings though descendants?
     final nextParsedAll = <Node>[];
 
     final element = this.element;
@@ -280,15 +279,18 @@ class TsElement extends Shared
     final parentNode = element.parentNode;
     if (parentNode == null) return nextParsedAll;
 
-    // find within next siblings
+    // find within next siblings (and their descendants)
     final nextIndex = _getCurrNodeIndex(parentNode, element) + 1;
     final allSiblings = parentNode.nodes;
     if (nextIndex < allSiblings.length) {
       final rangeList = allSiblings.getRange(nextIndex, allSiblings.length);
-      nextParsedAll.addAll(rangeList);
+      for (final sibling in rangeList) {
+        nextParsedAll.add(sibling);
+        nextParsedAll.addAll(recursiveNodeSearch(sibling));
+      }
     }
 
-    // find within parent and next siblings
+    // find within parent and next siblings (and their descendants)
     Node prevNode = parentNode;
     Node? parent = parentNode.parentNode;
     while (parent != null) {
@@ -297,7 +299,10 @@ class TsElement extends Shared
 
       if (nextIndex < allSiblings.length) {
         final rangeList = allSiblings.getRange(nextIndex, allSiblings.length);
-        nextParsedAll.addAll(rangeList);
+        for (final sibling in rangeList) {
+          nextParsedAll.add(sibling);
+          nextParsedAll.addAll(recursiveNodeSearch(sibling));
+        }
       }
 
       prevNode = parent;
@@ -336,12 +341,15 @@ class TsElement extends Shared
     final parentNode = element.parentNode;
     if (parentNode == null) return prevParsedAll;
 
-    // find within parent and prev siblings
+    // find within parent and prev siblings (and their descendants)
     final prevIndex = _getCurrNodeIndex(parentNode, element) - 1;
     final allSiblings = parentNode.nodes;
     if (prevIndex >= 0) {
       final rangeList = allSiblings.getRange(0, prevIndex + 1);
-      prevParsedAll.addAll(List.of(rangeList).reversed);
+      for (final sibling in rangeList.toList().reversed) {
+        prevParsedAll.add(sibling);
+        prevParsedAll.addAll(recursiveNodeSearch(sibling));
+      }
     }
 
     Node prevNode = parentNode;
@@ -353,9 +361,13 @@ class TsElement extends Shared
       if (prevIndex == -1) {
         // top most element (?)
         prevParsedAll.add(allSiblings.first);
+        prevParsedAll.addAll(recursiveNodeSearch(allSiblings.first));
       } else if (prevIndex >= 0) {
         final rangeList = allSiblings.getRange(0, prevIndex + 1);
-        prevParsedAll.addAll(List.of(rangeList).reversed);
+        for (final sibling in rangeList.toList().reversed) {
+          prevParsedAll.add(sibling);
+          prevParsedAll.addAll(recursiveNodeSearch(sibling));
+        }
       }
 
       prevNode = parent;
@@ -446,6 +458,21 @@ class TsElement extends Shared
   }
 
   @override
+  TsElement wrapWithString(TsElement newParentElement, String string) {
+    final newElement = newParentElement._element.clone(true);
+    final textNode = Text(string);
+    newElement.nodes.add(textNode);
+    newElement.nodes.add(_element.clone(true));
+
+    if (_element.parentNode != null) {
+      final index = _element.parentNode!.nodes.indexOf(_element);
+      _element.parentNode!.nodes.insert(index, newElement);
+      element = _element.parentNode!.nodes[index] as Element;
+    }
+    return this;
+  }
+
+  @override
   TsElement? unwrap() {
     for (final child in _element.nodes) {
       if (child.nodeType == Node.ELEMENT_NODE) {
@@ -474,6 +501,29 @@ class TsElement extends Shared
 
   @override
   void reparentChildren(Node newParent) => _element.reparentChildren(newParent);
+
+  @override
+  void smooth() {
+    void smoothNode(Node node) {
+      if (node is Element && node.hasChildNodes()) {
+        final nodes = node.nodes.toList();
+        for (int i = 0; i < nodes.length - 1; i++) {
+          if (nodes[i] is Text && nodes[i + 1] is Text) {
+            final textNode = nodes[i] as Text;
+            final nextTextNode = nodes[i + 1] as Text;
+            textNode.data = '${textNode.data}${nextTextNode.data}';
+            node.nodes.removeAt(i + 1);
+            i--;
+          }
+        }
+        for (final child in node.nodes) {
+          smoothNode(child);
+        }
+      }
+    }
+
+    smoothNode(_element);
+  }
 
   @override
   TsElement clone(bool deep) => (_element.clone(deep)).bs4;

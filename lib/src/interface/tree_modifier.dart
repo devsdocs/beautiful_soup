@@ -3,7 +3,6 @@ import 'package:html/dom.dart';
 import '../ts_element.dart';
 
 /// Contains methods from [Modifying the tree](https://www.crummy.com/software/TypedSoup/bs4/doc/#modifying-the-tree).
-// TODO: smooth
 abstract class ITreeModifier {
   /// {@macro TsElement_string}
   set string(String? value);
@@ -85,8 +84,13 @@ abstract class ITreeModifier {
   TsElement replaceWith(TsElement otherElement);
 
   /// Wraps an element in the tag you specify. It returns the new wrapper.
-  // TODO: possibility to wrap also string?
   TsElement wrap(TsElement newParentElement);
+
+  /// Wraps an element in the tag you specify. It returns the new wrapper.
+  ///
+  /// [newParentElement] - the tag to wrap with
+  /// [string] - optional string content to add to the wrapper
+  TsElement wrapWithString(TsElement newParentElement, String string);
 
   /// [unwrap] is the opposite of [wrap].
   ///
@@ -98,8 +102,7 @@ abstract class ITreeModifier {
   TsElement? unwrap();
 
   /// Cleans up the parse tree by consolidating adjacent strings.
-  // ignore: unused_element
-  void _smooth();
+  void smooth();
 
   /// {@template tree_modifier_setAttr}
   /// Sets the [value] of an attribute on the specified element.
@@ -107,7 +110,7 @@ abstract class ITreeModifier {
   /// If the attribute already exists, the value is updated;
   /// otherwise a new attribute is added with the specified [name] and [value].
   /// {@endtemplate}
-  operator []=(String name, String value);
+  void operator []=(String name, String value);
 
   /// {@macro tree_modifier_setAttr}
   void setAttr(String name, String value);

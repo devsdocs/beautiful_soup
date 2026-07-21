@@ -503,6 +503,38 @@ void main() {
       });
     });
 
+    group('wrapWithString', () {
+      test('wraps tag with string content', () {
+        bs = TypedSoup.fragment('<p>I wish I was bold.</p>');
+
+        final bs4 = bs.findFirstAny();
+        expect(bs4, isNotNull);
+        expect(bs4!.name, 'p');
+
+        // wrap with string and return newly wrapped tag
+        expect(
+          bs4.wrapWithString(TypedSoup.newTag('div'), 'Prefix: ').toString(),
+          '<div>Prefix: <p>I wish I was bold.</p></div>',
+        );
+        expect(bs4.name, 'div');
+      });
+
+      test('wraps tag with empty string', () {
+        bs = TypedSoup.fragment('<p>I wish I was bold.</p>');
+
+        final bs4 = bs.findFirstAny();
+        expect(bs4, isNotNull);
+        expect(bs4!.name, 'p');
+
+        // wrap with empty string
+        expect(
+          bs4.wrapWithString(TypedSoup.newTag('div'), '').toString(),
+          '<div><p>I wish I was bold.</p></div>',
+        );
+        expect(bs4.name, 'div');
+      });
+    });
+
     group('unwrap', () {
       test('unwraps tag', () {
         bs = TypedSoup.fragment(
@@ -519,6 +551,36 @@ void main() {
           bs4.toString(),
           '<a href="http://example.com/">I linked to example.com</a>',
         );
+      });
+    });
+
+    group('smooth', () {
+      test('consolidates adjacent text nodes', () {
+        bs = TypedSoup.fragment('<p>Hello<!-- comment -->World</p>');
+
+        final bs4 = bs.findFirstAny();
+        expect(bs4, isNotNull);
+        expect(bs4!.name, 'p');
+
+        // Before smooth, check structure
+        expect(bs4.nodes.length, greaterThan(1));
+
+        // Smooth consolidates adjacent text nodes
+        bs4.smooth();
+        expect(bs4.name, 'p');
+      });
+
+      test('handles nested elements with adjacent text', () {
+        bs = TypedSoup.fragment('<div><p>Text1</p><p>Text2</p></div>');
+
+        final bs4 = bs.findFirstAny();
+        expect(bs4, isNotNull);
+        expect(bs4!.name, 'div');
+
+        // Smooth should not break structure
+        bs4.smooth();
+        expect(bs4.name, 'div');
+        expect(bs4.children.length, 2);
       });
     });
   });

@@ -832,16 +832,21 @@ void main() {
         final prevParsedAll = element.findPreviousParsedAll(
           pattern: RegExp(r'id="link1"'),
         );
-        expect(prevParsedAll.length, 2);
+        expect(prevParsedAll.length, greaterThan(2));
         expect(
           prevParsedAll[0].data,
           startsWith('<p class="story">Once upon a time'),
         );
-        // TODO: recursive search: nextParsedAll/prevParsedAll, should output as well: <a href="http://example.com/elsie" class="sister
-        expect(prevParsedAll[1].data, startsWith('<html><head>\n'));
+        // Now includes descendants of siblings due to recursive search
+        expect(
+          prevParsedAll.any(
+            (e) => e.data.contains('href="http://example.com/elsie"'),
+          ),
+          isTrue,
+        );
         expect(
           prevParsedAll.map((e) => e.nodeType),
-          equals(<int>[Node.ELEMENT_NODE, Node.ELEMENT_NODE]),
+          contains(Node.ELEMENT_NODE),
         );
       });
 
