@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:beautiful_soup_dart/typed_soup.dart';
+import 'package:typed_soup/typed_soup.dart';
 import 'package:html/dom.dart';
 
 import 'helpers.dart';

@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:beautiful_soup_dart/typed_soup.dart';
+import 'package:typed_soup/typed_soup.dart';
 
 const html_doc = """
 <html>

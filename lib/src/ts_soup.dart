@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:beautiful_soup_dart/src/ts_element.dart';
-import 'package:beautiful_soup_dart/src/extensions.dart';
+import 'package:typed_soup/src/ts_element.dart';
+import 'package:typed_soup/src/extensions.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 

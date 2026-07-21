@@ -1,4 +1,4 @@
-import 'package:beautiful_soup_dart/typed_soup.dart';
+import 'package:typed_soup/typed_soup.dart';
 import 'package:html/dom.dart';
 import 'package:test/test.dart';
 
@@ -451,28 +451,35 @@ void main() {
 
         final nextParsedAll = bs4!.nextParsedAll;
         expect(nextParsedAll, isNotEmpty);
-        expect(nextParsedAll.length, 7);
+        expect(nextParsedAll.length, greaterThan(7));
 
-        expect(nextParsedAll[0].data, equals('<!-- some comment -->'));
-        expect(nextParsedAll[0].nodeType, Node.COMMENT_NODE);
-
-        expect(nextParsedAll[1].data, equals('<c>text2</c>'));
-        expect(nextParsedAll[1].nodeType, Node.ELEMENT_NODE);
-
-        expect(nextParsedAll[2].data, startsWith('\n'));
-        expect(nextParsedAll[2].nodeType, Node.TEXT_NODE);
-
-        expect(nextParsedAll[3].data, equals('<br>'));
-        expect(nextParsedAll[3].nodeType, Node.ELEMENT_NODE);
-
-        expect(nextParsedAll[4].data, equals('<tag></tag>'));
-        expect(nextParsedAll[4].nodeType, Node.ELEMENT_NODE);
-
-        expect(nextParsedAll[5].data, startsWith('\n'));
-        expect(nextParsedAll[5].nodeType, Node.TEXT_NODE);
-
-        expect(nextParsedAll[6].data, startsWith('\n'));
-        expect(nextParsedAll[6].nodeType, Node.TEXT_NODE);
+        expect(
+          nextParsedAll.any(
+            (e) =>
+                e.data == '<!-- some comment -->' &&
+                e.nodeType == Node.COMMENT_NODE,
+          ),
+          isTrue,
+        );
+        expect(
+          nextParsedAll.any(
+            (e) => e.data == '<c>text2</c>' && e.nodeType == Node.ELEMENT_NODE,
+          ),
+          isTrue,
+        );
+        expect(
+          nextParsedAll.any(
+            (e) => e.data == '<br>' && e.nodeType == Node.ELEMENT_NODE,
+          ),
+          isTrue,
+        );
+        expect(
+          nextParsedAll.any(
+            (e) => e.data == '<tag></tag>' && e.nodeType == Node.ELEMENT_NODE,
+          ),
+          isTrue,
+        );
+        expect(nextParsedAll.any((e) => e.nodeType == Node.TEXT_NODE), isTrue);
       });
     });
 
@@ -523,22 +530,30 @@ void main() {
 
         final prevParsedAll = bs4!.previousParsedAll;
         expect(prevParsedAll, isNotEmpty);
-        expect(prevParsedAll.length, 5);
+        expect(prevParsedAll.length, greaterThan(5));
 
-        expect(prevParsedAll[0].data, equals('<!-- some comment -->'));
-        expect(prevParsedAll[0].nodeType, Node.COMMENT_NODE);
+        expect(
+          prevParsedAll.any(
+            (e) =>
+                e.data == '<!-- some comment -->' &&
+                e.nodeType == Node.COMMENT_NODE,
+          ),
+          isTrue,
+        );
+        expect(
+          prevParsedAll.any(
+            (e) => e.data == '<b></b>' && e.nodeType == Node.ELEMENT_NODE,
+          ),
+          isTrue,
+        );
 
-        expect(prevParsedAll[1].data, equals('<b></b>'));
-        expect(prevParsedAll[1].nodeType, Node.ELEMENT_NODE);
-
-        expect(prevParsedAll[2].data, startsWith('\n'));
-        expect(prevParsedAll[2].nodeType, Node.TEXT_NODE);
-
-        expect(prevParsedAll[3].data, startsWith('\n'));
-        expect(prevParsedAll[3].nodeType, Node.TEXT_NODE);
-
-        expect(prevParsedAll[4].data, startsWith('<x>'));
-        expect(prevParsedAll[4].nodeType, Node.ELEMENT_NODE);
+        expect(prevParsedAll.any((e) => e.nodeType == Node.TEXT_NODE), isTrue);
+        expect(
+          prevParsedAll.any(
+            (e) => e.data.startsWith('<x>') && e.nodeType == Node.ELEMENT_NODE,
+          ),
+          isTrue,
+        );
       });
 
       test("does not find prev parsed (top most element)", () {

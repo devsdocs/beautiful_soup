@@ -1,8 +1,8 @@
-# Beautiful Soup Dart
+# Typed Soup
 
-[![pub package](https://img.shields.io/pub/v/beautiful_soup_dart.svg)](https://pub.dev/packages/beautiful_soup_dart)
-![tests](https://github.com/mzdm/beautiful_soup/actions/workflows/main.yml/badge.svg)
-[![codecov](https://codecov.io/gh/mzdm/beautiful_soup/branch/master/graph/badge.svg)](https://codecov.io/gh/mzdm/beautiful_soup)
+[![pub package](https://img.shields.io/pub/v/typed_soup.svg)](https://pub.dev/packages/typed_soup)
+![tests](https://github.com/devsdocs/beautiful_soup/actions/workflows/main.yml/badge.svg)
+[![codecov](https://codecov.io/gh/devsdocs/beautiful_soup/branch/master/graph/badge.svg)](https://codecov.io/gh/devsdocs/beautiful_soup)
 
 [comment]: <> ([![codecov]&#40;https://codecov.io/gh/mzdm/beautiful_soup/branch/master/graph/badge.svg&#41;]&#40;https://codecov.io/gh/mzdm/beautiful_soup&#41;)
 
@@ -14,7 +14,7 @@ modifying the HTML tree.
 A simple usage example:
 
 ```dart
-import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:typed_soup/typed_soup.dart';
 
 /// 1. parse a document String
 TypedSoup bs = TypedSoup(html_doc_string);
@@ -102,5 +102,5 @@ Other methods from the `Element` from [`html package`](https://pub.dev/packages/
 
 ## Features and bugs
 
-Please file feature requests and bugs at the [issue tracker](https://github.com/mzdm/beautiful_soup/issues) or feel
+Please file feature requests and bugs at the [issue tracker](https://github.com/devsdocs/beautiful_soup/issues) or feel
 free to raise a PR.

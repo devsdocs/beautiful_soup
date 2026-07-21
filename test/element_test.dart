@@ -1,4 +1,4 @@
-import 'package:beautiful_soup_dart/typed_soup.dart';
+import 'package:typed_soup/typed_soup.dart';
 import 'package:test/test.dart';
 
 import 'fixtures/fixtures.dart';
