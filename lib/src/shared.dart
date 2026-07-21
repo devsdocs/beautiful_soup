@@ -503,6 +503,45 @@ class Shared extends Tags implements ITreeSearcher, IOutput {
   String get text => getText();
 
   @override
+  List<TsElement> select(String selector, {int? limit}) {
+    return findAll('*', selector: selector, limit: limit);
+  }
+
+  @override
+  TsElement? select_one(String selector) {
+    return find('*', selector: selector);
+  }
+
+  @override
+  Iterable<String> get strings sync* {
+    Iterable<String> collectStrings(Node node) sync* {
+      if (node.nodeType == Node.TEXT_NODE) {
+        yield node.data;
+      }
+      if (node.hasChildNodes()) {
+        for (final child in node.nodes) {
+          yield* collectStrings(child);
+        }
+      }
+    }
+
+    final target = element ?? _bs4.element;
+    if (target != null) {
+      yield* collectStrings(target);
+    }
+  }
+
+  @override
+  Iterable<String> get strippedStrings sync* {
+    for (final str in strings) {
+      final stripped = str.trim();
+      if (stripped.isNotEmpty) {
+        yield stripped;
+      }
+    }
+  }
+
+  @override
   String prettify() {
     final topElement = findFirstAny()?.clone(true);
     if (topElement == null ||

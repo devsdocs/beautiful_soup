@@ -83,6 +83,13 @@ abstract class ITreeModifier {
   /// `TsElement.element.replaceWith(node)`.
   TsElement replaceWith(TsElement otherElement);
 
+  /// Replaces the element with its children.
+  ///
+  /// This is the opposite of [wrap]. It removes the tag but keeps its contents.
+  ///
+  /// Returns the element that was replaced.
+  TsElement replaceWithChildren();
+
   /// Wraps an element in the tag you specify. It returns the new wrapper.
   TsElement wrap(TsElement newParentElement);
 

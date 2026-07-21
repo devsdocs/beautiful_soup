@@ -346,4 +346,21 @@ abstract class ITreeSearcher {
     int? nodeType,
     int? limit,
   });
+
+  /// Searches the tree using CSS selectors.
+  ///
+  /// This is a convenience method that wraps [findAll] with a selector.
+  /// Returns all elements matching the CSS selector.
+  ///
+  /// [selector] - CSS selector string
+  /// [limit] - maximum number of results to return
+  List<TsElement> select(String selector, {int? limit});
+
+  /// Searches the tree using CSS selectors.
+  ///
+  /// This is a convenience method that wraps [find] with a selector.
+  /// Returns the first element matching the CSS selector, or null if not found.
+  ///
+  /// [selector] - CSS selector string
+  TsElement? select_one(String selector);
 }

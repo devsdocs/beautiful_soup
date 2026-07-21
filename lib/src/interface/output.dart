@@ -35,4 +35,14 @@ abstract class IOutput {
   /// Returns the whole element's representation as a [String].
   @override
   String toString();
+
+  /// Returns a generator of all strings in the document and its descendants.
+  ///
+  /// Similar to [strippedStrings] but does not strip whitespace.
+  Iterable<String> get strings;
+
+  /// Returns a generator of all stripped strings in the document and its descendants.
+  ///
+  /// Strips whitespace from the beginning and end of each string.
+  Iterable<String> get strippedStrings;
 }

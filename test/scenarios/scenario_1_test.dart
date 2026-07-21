@@ -17,24 +17,30 @@ void main() {
         expect(bs4, isNotNull);
         expect(bs4!.name, equals('div'));
 
-        final text = bs4.strippedStrings;
+        final textList = bs4.strippedStrings.toList();
 
         // title
-        expect(text, startsWith("Here’s the Scoop on NIGHTFLYERS"));
+        expect(textList.first, startsWith("Here’s the Scoop on NIGHTFLYERS"));
 
         // content
         expect(
-          text,
+          textList.join(' '),
           contains(
             'Needless to say, once those stories appeared I was deluged with requests for comment and clarification.',
           ),
         );
 
         // tags
-        expect(text, contains('Tags: science fiction, syfy, television'));
+        expect(
+          textList.join(' '),
+          contains('Tags: science fiction, syfy, television'),
+        );
 
         // comment section
-        expect(text, contains('Comments are disabled for this post.'));
+        expect(
+          textList.join(' '),
+          contains('Comments are disabled for this post.'),
+        );
       });
 
       test('finds all image links within main post content', () {

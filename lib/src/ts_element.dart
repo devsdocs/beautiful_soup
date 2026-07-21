@@ -53,20 +53,14 @@ class TsElement extends Shared
   }
 
   @override
-  String get strippedStrings {
-    final strBuffer = StringBuffer();
+  Iterable<String> get strippedStrings sync* {
     final strLines = _element.text.split('\n');
     for (final str in strLines) {
       final trimmed = str.trimLeft();
       if (trimmed != '') {
-        if (strLines.length > 1) {
-          strBuffer.write('$trimmed\n');
-        } else {
-          strBuffer.write(trimmed);
-        }
+        yield trimmed;
       }
     }
-    return strBuffer.toString();
   }
 
   @override
@@ -99,6 +93,11 @@ class TsElement extends Shared
         .map((e) => recursiveSearch(e.bs4))
         .expand((e) => e)
         .toList();
+  }
+
+  @override
+  List<TsElement> get selfAndDescendants {
+    return [this, ...descendants];
   }
 
   @override
@@ -220,6 +219,31 @@ class TsElement extends Shared
     }
 
     return prevElements;
+  }
+
+  @override
+  List<TsElement> get selfAndParents {
+    return [this, ...parents];
+  }
+
+  @override
+  List<TsElement> get selfAndNextElements {
+    return [this, ...nextElements];
+  }
+
+  @override
+  List<TsElement> get selfAndPreviousElements {
+    return [this, ...previousElements];
+  }
+
+  @override
+  List<TsElement> get selfAndNextSiblings {
+    return [this, ...nextSiblings];
+  }
+
+  @override
+  List<TsElement> get selfAndPreviousSiblings {
+    return [this, ...previousSiblings];
   }
 
   @override
@@ -445,6 +469,15 @@ class TsElement extends Shared
       (_element.replaceWith(otherElement._element) as Element).bs4;
 
   @override
+  TsElement replaceWithChildren() {
+    final children = _element.nodes.toList();
+    for (final child in children) {
+      _element.replaceWith(child);
+    }
+    return this;
+  }
+
+  @override
   TsElement wrap(TsElement newParentElement) {
     final newElement = newParentElement._element.clone(true)
       ..nodes.add(_element.clone(true));
@@ -540,6 +573,12 @@ class TsElement extends Shared
 
   @override
   bool hasAttr(String name) => _element.attributes.containsKey(name);
+
+  @override
+  String? get(String name, {String? defaultValue}) {
+    final value = this[name];
+    return value ?? defaultValue;
+  }
 
   @override
   void removeAttr(String name) => _element.attributes.remove(name);

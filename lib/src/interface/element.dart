@@ -95,4 +95,9 @@ abstract class IElement {
 
   /// Returns `true` if the element has defined this attribute.
   bool hasAttr(String name);
+
+  /// Gets an attribute value by [name] with optional default.
+  ///
+  /// Returns [defaultValue] if attribute does not exist.
+  String? get(String name, {String? defaultValue});
 }

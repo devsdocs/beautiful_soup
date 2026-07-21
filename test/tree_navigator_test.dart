@@ -94,28 +94,25 @@ void main() {
       test("finds regular text normally", () {
         final bs4 = bs.title;
         expect(bs4, isNotNull);
-        expect(bs4!.strippedStrings, equals("The Dormouse's story"));
+        expect(bs4!.strippedStrings, contains("The Dormouse's story"));
       });
 
       test("finds stripped strings", () {
         final bs4 = bs.find('p', attrs: {'class': 'story'});
         expect(bs4, isNotNull);
 
-        final str = bs4!.strippedStrings;
-        expect(str, startsWith("Once upon a time there were"));
-
-        final strLines = str.split('\n');
-        expect(strLines[0], startsWith('Once upon a time there were'));
-        expect(strLines[1], startsWith('Elsie'));
-        expect(strLines[2], startsWith('Lacie'));
-        expect(strLines[3], startsWith('Tillie'));
+        final strList = bs4!.strippedStrings.toList();
+        expect(strList.first, startsWith("Once upon a time there were"));
+        expect(strList, contains('Elsie,'));
+        expect(strList, contains('Lacie and'));
+        expect(strList, contains('Tillie;'));
       });
 
       test("does not find text", () {
         bs = TypedSoup(html_prettify);
         final bs4 = bs.head;
         expect(bs4, isNotNull);
-        expect(bs4!.strippedStrings, equals(''));
+        expect(bs4!.strippedStrings, isEmpty);
       });
     });
 

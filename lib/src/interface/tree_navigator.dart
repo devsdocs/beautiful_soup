@@ -19,14 +19,15 @@ abstract class ITreeNavigator {
   /// Similar to [children] but it iterates recursively.
   List<TsElement> get descendants;
 
+  /// Returns the element itself followed by all its descendants.
+  ///
+  /// This is useful when you want to include the current element in descendant navigation.
+  List<TsElement> get selfAndDescendants;
+
   /// {@template TsElement_string}
   /// Returns or modifies the text of element(s).
   /// {@endtemplate}
   String get string;
-
-  /// Returns the text of an element(s), trims extra whitespaces from the left
-  /// and removes empty lines.
-  String get strippedStrings;
 
   /// The element's parent.
   ///
@@ -111,4 +112,29 @@ abstract class ITreeNavigator {
   ///
   /// Returns a list of [previousParsed]s.
   List<Node> get previousParsedAll;
+
+  /// Returns the element itself followed by all its parents.
+  ///
+  /// This is useful when you want to include the current element in parent navigation.
+  List<TsElement> get selfAndParents;
+
+  /// Returns the element itself followed by all its next elements.
+  ///
+  /// This is useful when you want to include the current element in forward navigation.
+  List<TsElement> get selfAndNextElements;
+
+  /// Returns the element itself followed by all its previous elements.
+  ///
+  /// This is useful when you want to include the current element in backward navigation.
+  List<TsElement> get selfAndPreviousElements;
+
+  /// Returns the element itself followed by all its next siblings.
+  ///
+  /// This is useful when you want to include the current element in sibling navigation.
+  List<TsElement> get selfAndNextSiblings;
+
+  /// Returns the element itself followed by all its previous siblings.
+  ///
+  /// This is useful when you want to include the current element in sibling navigation.
+  List<TsElement> get selfAndPreviousSiblings;
 }
